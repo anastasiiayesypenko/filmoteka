@@ -4,17 +4,19 @@ export default class SearchModel {
 
     }
     fetchFilmByTitle(title) {
-        let film = fetch(`http://www.omdbapi.com/?t=${title}&apikey=c6c6013b`)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error(`Error while fetching: ${response.statusText}`);
-        })
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => console.log(error));
+        return new Promise(resolve => {
+            let film = fetch(`http://www.omdbapi.com/?t=${title}&apikey=c6c6013b`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error(`Error while fetching: ${response.statusText}`);
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => console.log(error));
+        });
     }
-    
+
 }
