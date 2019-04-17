@@ -28,7 +28,8 @@ export default class SearchView extends EventEmitter {
         this.form.appendChild(this.input);
         this.form.addEventListener('submit', this.onFilmSearch.bind(this));
         this.cardSection = document.createElement('section');
-        this.app.append(this.header, this.title, this.form, this.cardSection);
+        this.footer = document.createElement('footer');
+        this.app.append(this.header, this.title, this.form, this.cardSection, this.footer);
     }
     onFilmSearch(event) {
         event.preventDefault();
