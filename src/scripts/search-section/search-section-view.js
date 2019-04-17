@@ -38,12 +38,14 @@ export default class SearchView extends EventEmitter {
     }  
     drawCard(data) {
         this.cardSection.innerHTML = '';
-        let card = document.createElement('div');
-        let filmTitle = document.createElement('p');
-        let filmImage = document.createElement('img');
-        filmTitle.textContent = data.Title;
-        filmImage.setAttribute('src', data.Poster);
-        card.append(filmTitle, filmImage);
-        this.cardSection.appendChild(card);
+        let markup = data.map(item => {
+            let card = document.createElement('div');
+            let filmTitle = document.createElement('p');
+            let filmImage = document.createElement('img');
+            filmTitle.textContent = item.Title;
+            filmImage.setAttribute('src', item.Poster);
+            card.append(filmTitle, filmImage);
+            this.cardSection.appendChild(card);
+        });
     }
 }
