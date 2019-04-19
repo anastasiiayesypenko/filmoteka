@@ -1,7 +1,6 @@
 'use strict';
 import EventEmitter from "./services/eventemitter";
-// require('handlebars');
-// import './templates/template.hbs';
+import * as src from './image/no-image.jpg';
 export default class SearchView extends EventEmitter {
     constructor() {
         super();
@@ -49,7 +48,11 @@ export default class SearchView extends EventEmitter {
             let filmTitle = document.createElement('p');
             let filmImage = document.createElement('img');
             filmTitle.textContent = item.Title;
-            filmImage.setAttribute('src', item.Poster);
+            let { Poster } = item;
+            if ( Poster === 'N/A') {
+                Poster = src.default;
+            }
+            filmImage.setAttribute('src', Poster);
             card.append(filmTitle, filmImage);
             this.cardSection.appendChild(card);
         });
