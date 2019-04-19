@@ -22,13 +22,18 @@ export default class SearchView extends EventEmitter {
         </ul>`;
         this.header.append(this.logo, this.navigation);
         this.title = document.createElement('h2');
+        this.title.classList.add('h2');
         this.title.textContent = 'Персональная фильмотека';
         this.form = document.createElement('form');
         this.input = document.createElement('input');
         this.form.appendChild(this.input);
+        this.form.classList.add('form');
         this.form.addEventListener('submit', this.onFilmSearch.bind(this));
         this.cardSection = document.createElement('section');
+        this.cardSection.classList.add('card-section');
         this.footer = document.createElement('footer');
+        this.footer.classList.add('footer');
+        this.footer.textContent = 'Made with ❤️ by Kolya Raketa';
         this.app.append(this.header, this.title, this.form, this.cardSection, this.footer);
     }
     onFilmSearch(event) {

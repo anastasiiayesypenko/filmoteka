@@ -5,7 +5,7 @@ export default class SearchModel {
     }
     fetchFilmByTitle(title) {
         return new Promise(resolve => {
-            let film = fetch(`http://www.omdbapi.com/?s=${title}&apikey=c6c6013b`)
+            let film = fetch(`http://www.omdbapi.com/?s=${title}&page=1&apikey=c6c6013b`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
