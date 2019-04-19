@@ -4,9 +4,14 @@ export default class SearchController {
         this.model = model;
         this.view = view;
         this.view.on('search', this.onSearch.bind(this));
+        this.view.on('move', this.onMove.bind(this));
     }
-    onSearch(value) {
-        this.model.fetchFilmByTitle(value)
+    onSearch(value, page) {
+        this.model.fetchFilmByTitle(value, page)
+        .then(data => this.view.drawCard(data.Search));
+    }
+    onMove(value, page) {
+        this.model.fetchFilmByTitle(value, page)
         .then(data => this.view.drawCard(data.Search));
     }
 }
