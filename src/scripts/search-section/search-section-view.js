@@ -30,10 +30,19 @@ export default class SearchView extends EventEmitter {
         this.form.addEventListener('submit', this.onFilmSearch.bind(this));
         this.cardSection = document.createElement('section');
         this.cardSection.classList.add('card-section');
+        this.forwardButton = document.createElement('button');
+        this.backwardButton = document.createElement('button');
+        this.page = document.createElement('div');
+        this.paginationWrapper = document.createElement('div');
+        this.page.textContent = '1';
+        this.forwardButton.textContent = 'Вперед';
+        this.backwardButton.textContent = 'Назад';
+        this.paginationWrapper.append(this.backwardButton, this.page, this.forwardButton);
+        this.paginationWrapper.classList.add('hidden');
         this.footer = document.createElement('footer');
         this.footer.classList.add('footer');
         this.footer.textContent = 'Made with ❤️ by Kolya Raketa';
-        this.app.append(this.header, this.title, this.form, this.cardSection, this.footer);
+        this.app.append(this.header, this.title, this.form, this.cardSection, this.paginationWrapper, this.footer);
     }
     onFilmSearch(event) {
         event.preventDefault();
@@ -56,5 +65,7 @@ export default class SearchView extends EventEmitter {
             card.append(filmTitle, filmImage);
             this.cardSection.appendChild(card);
         });
+        this.paginationWrapper.classList.add('pagination');
     }
+
 }
