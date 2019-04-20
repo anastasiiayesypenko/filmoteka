@@ -74,7 +74,6 @@ export default class Library {
         <img src="${el.Poster}" alt="${el.Title}">
     </div>
     `;
-
       return acc;
     }, ``);
     result.innerHTML = content;
@@ -88,3 +87,4 @@ export default class Library {
     console.log(result);
   }
 }
+
