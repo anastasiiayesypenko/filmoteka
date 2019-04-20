@@ -12,6 +12,3 @@ let controller = new SearchController(model, view);
 const library = new Library();
 
 library.createHTML();
-
-
-
