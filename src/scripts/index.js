@@ -21,3 +21,13 @@ controller.view.app.append(button);
 function doSmth() {
     history.pushState(null, null, "library.html");
 }
+
+const library = new Library();
+console.log(library.createHTML());
+
+
+
+// const filmModel = new FilmModel();
+// const filmView = new FilmView();
+// let filmController = new FilmController(filmModel, filmView);
+
