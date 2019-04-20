@@ -23,7 +23,7 @@ function doSmth() {
 }
 
 const library = new Library();
-console.log(library.createHTML());
+
 
 
 

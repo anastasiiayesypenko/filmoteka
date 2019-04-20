@@ -55,8 +55,18 @@ export default class SearchView extends EventEmitter {
         this.app.append(this.header, this.title, this.form, this.cardSection, this.paginationWrapper, this.footer);
         this.mainLink = document.querySelector('.main-link');
         this.libraryLink = document.querySelector('.library-link');
-        this.libraryLink.addEventListener('click', library.createHTML);
+        this.libraryLink.addEventListener('click', this.boo.bind(this));
+
     }
+
+    boo(e){
+        e.preventDefault();
+        this.title.remove();
+        this.input.remove();
+        this.cardSection.textContent = '';
+        this.cardSection.append(library.createHTML());
+    }
+
     onFilmSearch(event) {
         event.preventDefault();
         let { value } = this.input;
