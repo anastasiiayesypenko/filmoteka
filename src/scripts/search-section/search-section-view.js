@@ -62,7 +62,7 @@ export default class SearchView extends EventEmitter {
     renderLibrary(e){
         e.preventDefault();
         this.title.remove();
-        this.input.remove();
+        this.form.remove();
         if(this.forwardButton) this.forwardButton.remove();
         if(this.backwardButton) this.backwardButton.remove();
         if(this.page) this.page.remove();
