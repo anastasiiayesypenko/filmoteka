@@ -55,14 +55,17 @@ export default class SearchView extends EventEmitter {
         this.app.append(this.header, this.title, this.form, this.cardSection, this.paginationWrapper, this.footer);
         this.mainLink = document.querySelector('.main-link');
         this.libraryLink = document.querySelector('.library-link');
-        this.libraryLink.addEventListener('click', this.boo.bind(this));
+        this.libraryLink.addEventListener('click', this.renderLibrary.bind(this));
 
     }
 
-    boo(e){
+    renderLibrary(e){
         e.preventDefault();
         this.title.remove();
         this.input.remove();
+        if(this.forwardButton) this.forwardButton.remove();
+        if(this.backwardButton) this.backwardButton.remove();
+        if(this.page) this.page.remove();
         this.cardSection.textContent = '';
         this.cardSection.append(library.createHTML());
     }
@@ -75,7 +78,7 @@ export default class SearchView extends EventEmitter {
         this.page.textContent = '1';
         let pageNumber = this.page.textContent;
         this.emit('search', value, pageNumber);
-        this.input.style.width = '400px'
+        this.input.style.width = '400px';
 
 
     }  
