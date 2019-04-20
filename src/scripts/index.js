@@ -10,8 +10,7 @@ const view = new SearchView();
 let controller = new SearchController(model, view);
 
 const library = new Library();
-
-library.createHTML();
+console.log(library.createHTML());
 
 
 
