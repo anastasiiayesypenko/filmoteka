@@ -1,24 +1,5 @@
 "use strict";
 
-// let mooviesArr = [
-//   {
-//     Poster:
-//       "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg",
-//     Title: "Iron Man",
-//     Type: "movie",
-//     Year: "2008",
-//     imdbID: "tt0371746"
-//   },
-//   {
-//     Poster:
-//       "https://m.media-amazon.com/images/M/MV5BMjE5MzcyNjk1M15BMl5BanBnXkFtZTcwMjQ4MjcxOQ@@._V1_SX300.jpg",
-//     Title: "Iron Man 3",
-//     Type: "movie",
-//     Year: "2013",
-//     imdbID: "tt1300854"
-//   }
-// ];
-
 export default class Library {
     constructor(){
        let createdHTML = this.createHTML();
@@ -54,15 +35,9 @@ export default class Library {
     linksList.append(itemQueue, itemFavorites, itemHaveSeen);
     container.append(moviesCards);
 
-
-
     btnQueue.addEventListener("click", this.showQueue.bind(this));
-    // btnFavorites.addEventListener('click', showFavorites);
-    // btnHaveSeen.addEventListener('click', showHaveSeen);
 
-    
-
-    return container;
+    console.log(container);
   }
 
   renderContent(arr) {
