@@ -12,8 +12,12 @@ const model = new SearchModel();
 const view = new SearchView();
 const controller = new SearchController(model, view);
 
+let hstr = history.state;
+let numberOfEntries = window.history.length;
 
-const library = new Library();
+console.log(hstr, numberOfEntries);
+
+
 
 
 

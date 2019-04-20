@@ -7,6 +7,7 @@ export default class Library {
 
   createHTML() {
     let container = document.createElement("div");
+    container.classList.add("button-container");
     container.classList.add("container");
 
     let linksList = document.createElement("ul");
@@ -20,6 +21,9 @@ export default class Library {
     btnQueue.classList.add('js-queue');
     btnFavorites.classList.add('js-favorites');
     btnHaveSeen.classList.add('js-seen');
+    btnQueue.classList.add('button-container__button');
+    btnFavorites.classList.add('button-container__button');
+    btnHaveSeen.classList.add('button-container__button');
 
     
     let queueArr = JSON.parse(localStorage.getItem('qeue') || '[]');
