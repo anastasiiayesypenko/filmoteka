@@ -60,6 +60,9 @@ export default class SearchView extends EventEmitter {
         this.page.textContent = '1';
         let pageNumber = this.page.textContent;
         this.emit('search', value, pageNumber);
+        this.input.style.width = '400px'
+
+
     }  
     drawCard(data) {
         let filmList = data.Search;
