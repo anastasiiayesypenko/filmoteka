@@ -1,5 +1,5 @@
 'use strict';
-export default class SearchModel {
+export default class FilmModel {
   constructor() {}
   fetchFilmByTitle(imdbId) {
     return new Promise(resolve => {

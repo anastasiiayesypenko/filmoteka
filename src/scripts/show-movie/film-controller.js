@@ -1,5 +1,5 @@
 'use strict';
-export default class SearchController {
+export default class FilmController {
   constructor(model, view) {
     this.model = model;
     this.view = view;
