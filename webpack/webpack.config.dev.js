@@ -7,19 +7,19 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'cheap-eval-source-map',
   output: {
-    chunkFilename: 'js/[name].chunk.js'
+    chunkFilename: 'js/[name].chunk.js',
   },
   devServer: {
     inline: true,
     hot: true,
-    contentBase: Path.resolve(__dirname, "../src"),
-    watchContentBase: true
+    contentBase: Path.resolve(__dirname, '../src'),
+    watchContentBase: true,
   },
   plugins: [
     new Webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify('development'),
     }),
-    new Webpack.HotModuleReplacementPlugin()
+    new Webpack.HotModuleReplacementPlugin(),
   ],
   module: {
     rules: [
@@ -29,8 +29,8 @@ module.exports = merge(common, {
         enforce: 'pre',
         loader: 'eslint-loader',
         options: {
-          emitWarning: true
-        }
+          emitWarning: true,
+        },
       },
       // {
       //   test: /\.(js)$/,
@@ -39,8 +39,8 @@ module.exports = merge(common, {
       // },
       {
         test: /\.s[ca]ss$/,
-        use: ['style-loader', 'css-loader?sourceMap=true', 'sass-loader']
-      }
-    ]
-  }
+        use: ['style-loader', 'css-loader?sourceMap=true', 'sass-loader'],
+      },
+    ],
+  },
 });
