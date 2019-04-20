@@ -14,7 +14,6 @@ export default class SearchModel {
             })
             .then(data => {
                 console.log(data);
-                localStorage.setItem('qeue', JSON.stringify(data.Search));
                 resolve(data);
 
             })
