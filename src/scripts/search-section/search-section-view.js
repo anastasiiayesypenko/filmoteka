@@ -37,11 +37,9 @@ export default class SearchView extends EventEmitter {
         this.forwardButton.classList.add('pagination__forward-button');
         this.backwardButton = document.createElement('button');
         this.backwardButton.classList.add('pagination__backward-button');
-        this.backwardButton.classList.add('hidden');
         this.page = document.createElement('div');
         this.page.classList.add('pagination__page');
         this.paginationWrapper = document.createElement('div');
-        this.page.textContent = '1';
         this.forwardButton.textContent = 'Вперед';
         this.backwardButton.textContent = 'Назад';
         this.backwardButton.addEventListener('click', this.onBackwardClick.bind(this));
@@ -57,12 +55,20 @@ export default class SearchView extends EventEmitter {
     onFilmSearch(event) {
         event.preventDefault();
         let { value } = this.input;
-        let pageNumber = 1;
+        this.backwardButton.classList.add('hidden');
+        this.forwardButton.classList.remove('hidden');
+        this.page.textContent = '1';
+        let pageNumber = this.page.textContent;
         this.emit('search', value, pageNumber);
     }  
     drawCard(data) {
+        let filmList = data.Search;
+        let amountOfPages = Math.ceil(data.totalResults / 10);
+        if (this.page.textContent >= amountOfPages) {
+            this.forwardButton.classList.add('hidden');
+        }
         this.cardSection.innerHTML = '';
-        let markup = data.map(item => {
+        let markup = filmList.map(item => {
             let card = document.createElement('div');
             let filmTitle = document.createElement('p');
             let filmImage = document.createElement('img');
@@ -78,10 +84,16 @@ export default class SearchView extends EventEmitter {
         this.paginationWrapper.classList.add('pagination');
     }
     onBackwardClick() {
-        let pageNumber = Number(this.page.textContent) - 1;
-        this.page.textContent = pageNumber;
-        let { value } = this.input;
-        this.emit('move', value, pageNumber);
+        this.forwardButton.classList.remove('hidden');
+        if (this.page.textContent >= 2) {
+            let pageNumber = Number(this.page.textContent) - 1;
+            this.page.textContent = pageNumber;
+            let { value } = this.input;
+            this.emit('move', value, pageNumber);
+        } 
+        if (this.page.textContent === '1') {
+            this.backwardButton.classList.add('hidden');
+        }
     }
     onForwardClick() {
         this.backwardButton.classList.remove('hidden');

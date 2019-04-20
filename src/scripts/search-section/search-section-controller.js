@@ -8,10 +8,10 @@ export default class SearchController {
     }
     onSearch(value, page) {
         this.model.fetchFilmByTitle(value, page)
-        .then(data => this.view.drawCard(data.Search));
+        .then(data => this.view.drawCard(data));
     }
     onMove(value, page) {
         this.model.fetchFilmByTitle(value, page)
-        .then(data => this.view.drawCard(data.Search));
+        .then(data => this.view.drawCard(data));
     }
 }
