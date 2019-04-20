@@ -20,6 +20,11 @@ export default class SearchView extends EventEmitter {
             </li>
         </ul>`;
         this.header.append(this.logo, this.navigation);
+
+        this.container = document.createElement('div');
+        this.container.classList.add('container');     
+
+        
         this.title = document.createElement('h2');
         this.title.classList.add('h2');
         this.title.textContent = 'Персональная фильмотека';
@@ -50,7 +55,9 @@ export default class SearchView extends EventEmitter {
         this.footer = document.createElement('footer');
         this.footer.classList.add('footer');
         this.footer.textContent = 'Made with ❤️ by Kolya Raketa';
-        this.app.append(this.header, this.title, this.form, this.cardSection, this.paginationWrapper, this.footer);
+
+        this.container.append(this.title, this.form, this.cardSection);
+        this.app.append(this.header, this.container, this.footer);
     }
     onFilmSearch(event) {
         event.preventDefault();
