@@ -15,6 +15,7 @@ export default class FilmView extends EventEmitter {
 
   isInStorage(type, id) {
     const storage = localStorage.getItem(type);
+    console.log(storage);
     if (!storage) {
       return false;
     }
@@ -24,56 +25,68 @@ export default class FilmView extends EventEmitter {
   changeValueBtnWatchedFilm({ target }, data) {
     const storage = this.isInStorage('watched');
     if (storage) {
-      target.textContent = 'Удалить из просмотренных';
+      console.log(storage);
+      const filterArr = JSON.parse(localStorage.getItem('watched')).filter(
+        el => el.imdbID !== data.imdbID,
+      );
+      localStorage.setItem('watched', JSON.stringify(filterArr));
+      target.textContent = 'Добавить в просмотренные';
     } else {
-      const getWathced = JSON.parse(localStorage.getItem('watched') || '[]');
-      getWathced.push({
+      const getWatсhed = JSON.parse(localStorage.getItem('watched') || '[]');
+      getWatсhed.push({
         Title: data.Title,
         Poster: data.Poster,
         Ratings: data.Ratings[0].Value,
+        imdbID: data.imdbID,
       });
-      localStorage.setItem('watched', JSON.stringify(getWathced));
-      this.buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+      localStorage.setItem('watched', JSON.stringify(getWatсhed));
+      target.textContent = 'Удалить из просмотренных';
     }
-
     target.dataset.storage = !storage;
-    console.log(storage);
   }
 
-  changeValueWatchedOnAdd() {
-    this.buttonWatchedFilm.textContent = 'Добавить в просмотренные';
-    this.buttonWatchedFilm.addEventListener(
-      'click',
-      this.changeValueBtnWatchedFilm.bind(this),
-    );
-    this.buttonWatchedFilm.removeEventListener(
-      'click',
-      this.changeValueWatchedOnAdd.bind(this),
-    );
+  changeValueBtnPlanWatching({ target }, data) {
+    const storage = this.isInStorage('plan');
+    if (storage) {
+      const filterArr = JSON.parse(localStorage.getItem('plan')).filter(
+        el => el.imdbID !== data.imdbID,
+      );
+      localStorage.setItem('plan', JSON.stringify(filterArr));
+      target.textContent = 'Запланировать просмотр';
+    } else {
+      const getPlanned = JSON.parse(localStorage.getItem('plan') || '[]');
+      getPlanned.push({
+        Title: data.Title,
+        Poster: data.Poster,
+        Ratings: data.Ratings[0].Value,
+        imdbID: data.imdbID,
+      });
+      localStorage.setItem('plan', JSON.stringify(getPlanned));
+      target.textContent = 'Убрать просмотр';
+    }
+    target.dataset.storage = !storage;
   }
 
-  changeValueBtnPlanWatching() {
-    this.buttonPlanWatching.textContent = 'Убрать просмотр';
-    this.buttonPlanWatching.addEventListener(
-      'click',
-      this.changeValuePlanOnAdd.bind(this),
-    );
-    this.buttonPlanWatching.removeEventListener(
-      'click',
-      this.changeValueBtnPlanWatching.bind(this),
-    );
-  }
-
-  changeValuePlanOnAdd() {
-    this.buttonPlanWatching.textContent = 'Запланировать просмотр';
-    this.buttonPlanWatching.addEventListener(
-      'click',
-      this.changeValueBtnPlanWatching.bind(this),
-    );
-  }
-
-  changeValueBtnAddFav() {
-    this.buttonAddFilmInFav.textContent = 'Убрать из избранных';
+  changeValueBtnAddFav({ target }, data) {
+    const storage = this.isInStorage('add');
+    if (storage) {
+      const filterArr = JSON.parse(localStorage.getItem('add')).filter(
+        el => el.imdbID !== data.imdbID,
+      );
+      localStorage.setItem('add', JSON.stringify(filterArr));
+      target.textContent = 'Добавить в избранное';
+    } else {
+      const getAdded = JSON.parse(localStorage.getItem('add') || '[]');
+      getAdded.push({
+        Title: data.Title,
+        Poster: data.Poster,
+        Ratings: data.Ratings[0].Value,
+        imdbID: data.imdbID,
+      });
+      localStorage.setItem('add', JSON.stringify(getAdded));
+      target.textContent = 'Убрать из избранных';
+    }
+    target.dataset.storage = !storage;
   }
 
   onFilmSearch(event) {
@@ -90,10 +103,12 @@ export default class FilmView extends EventEmitter {
     buttonWatchedFilm.textContent = 'Добавить в просмотренные';
 
     let buttonPlanWatching = document.createElement('button');
+    buttonPlanWatching.dataset.storage = this.isInStorage('watched');
     buttonPlanWatching.classList.add('movie-card__button');
     buttonPlanWatching.textContent = 'Запланировать просмотр';
 
     let buttonAddFilmInFav = document.createElement('button');
+    buttonAddFilmInFav.dataset.storage = this.isInStorage('watched');
     buttonAddFilmInFav.classList.add('movie-card__button');
     buttonAddFilmInFav.textContent = 'Добавить в избранное';
 
@@ -108,14 +123,12 @@ export default class FilmView extends EventEmitter {
     buttonWatchedFilm.addEventListener('click', event => {
       this.changeValueBtnWatchedFilm(event, data);
     });
-    buttonPlanWatching.addEventListener(
-      'click',
-      this.changeValueBtnPlanWatching.bind(this),
-    );
-    buttonAddFilmInFav.addEventListener(
-      'click',
-      this.changeValueBtnAddFav.bind(this),
-    );
+    buttonPlanWatching.addEventListener('click', event => {
+      this.changeValueBtnPlanWatching(event, data);
+    });
+    buttonAddFilmInFav.addEventListener('click', event => {
+      this.changeValueBtnAddFav(event, data);
+    });
 
     return filmButtons;
   }
