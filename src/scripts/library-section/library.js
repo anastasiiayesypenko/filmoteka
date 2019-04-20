@@ -1,8 +1,5 @@
 'use strict';
 
-
-
-
 export default function Show () {
     let container = document.querySelector('.container');
     container.innerHTML = '';

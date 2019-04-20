@@ -1,6 +1,7 @@
 'use strict';
 import EventEmitter from "./services/eventemitter";
 import * as src from './image/no-image.jpg';
+import Show from "../library-section/library";
 export default class SearchView extends EventEmitter {
     constructor() {
         super();
@@ -13,12 +14,15 @@ export default class SearchView extends EventEmitter {
         this.navigation.innerHTML = 
         `<ul class="header-list">
             <li class="header-list__item">
-                <a href="" class="header-list__itemlink">Главная страница</a>
+                <a href="" class="header-list__itemlink main-page-link">Главная страница</a>
             </li>
             <li class="header-list__item">
-                <a href="" class="header-list__itemlink">Моя фильмотека</a>
+                <a href="" class="header-list__itemlink library-link">Моя фильмотека</a>
             </li>
         </ul>`;
+        this.libraryLink = document.querySelector('library-link');
+        this.mainPageLink = document.querySelector('main-page-link');
+        this.libraryLink.addEventListener('click', Show);
         this.header.append(this.logo, this.navigation);
 
         this.container = document.createElement('div');
