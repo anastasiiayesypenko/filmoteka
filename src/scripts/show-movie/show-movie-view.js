@@ -20,15 +20,40 @@ export default class SearchView extends EventEmitter {
             </li>
         </ul>`;
     this.header.append(this.logo, this.navigation);
-    this.title = document.createElement('h2');
-    this.title.textContent = 'Персональная фильмотека';
     this.form = document.createElement('form');
     this.input = document.createElement('input');
     this.form.appendChild(this.input);
     this.form.addEventListener('submit', this.onFilmSearch.bind(this));
     this.cardSection = document.createElement('section');
-    this.app.append(this.header, this.title, this.form, this.cardSection);
+    this.app.append(this.header, this.form, this.cardSection);
+
+    this.buttonWatchedFilm =
+      '<button class="movie-card__button">Добавить в просмотренные</button>';
+
+    this.buttonPlanWatching =
+      '<button class="movie-card__button">Запланировать просмотр</button>';
+
+    this.buttonAddFilmInFav =
+      '<button class="movie-card__button">Добавить в избранное</button>';
   }
+
+  onAddFilmInWatched(event) {
+    event.preventDefault();
+    this.emit('change on del');
+  }
+
+  drawWBtn() {
+    this.buttonWatchedFilms.textContent = '';
+  }
+
+  onPlanFilmWatching(event) {
+    event.preventDefault();
+  }
+
+  onAddFilmInFav(event) {
+    event.preventDefault();
+  }
+
   onFilmSearch(event) {
     event.preventDefault();
     let { value } = this.input;
@@ -46,33 +71,33 @@ export default class SearchView extends EventEmitter {
     filmImage.classList.add('movie-card__image');
 
     let filmArticle = document.createElement('div');
-    filmArticle.innerHTML = `<p class="movie-card__title">${
+    filmArticle.innerHTML = `<p class="movie-card__title margin">${
       data.Title
     } <span class="movie-card__year">${data.Year}</span></p>
-    <p>${data.Plot}</p>
-    <p class="movie-card__pretitle">Awards: <span class="movie-card__description">${
+    <p class="margin">${data.Plot}</p>
+    <p class="movie-card__pretitle margin">Awards: <span class="movie-card__description">${
       data.Awards
     }</span></p>
-    <p class="movie-card__pretitle">Rating: <span>${
+    <p class="movie-card__pretitle margin">Rating: <span>${
       data.Ratings[0].Value
     }</span> <span class="movie-card__votes">${data.imdbVotes} votes</span></p>
-    <p class="movie-card__pretitle">Actors: <span class="movie-card__description">${
+    <p class="movie-card__pretitle margin">Actors: <span class="movie-card__description">${
       data.Actors
     }</span></p>
-    <p class="movie-card__pretitle">Country: <span class="movie-card__description">${
+    <p class="movie-card__pretitle margin">Country: <span class="movie-card__description">${
       data.Country
     }</span></p>
-    <p class="movie-card__pretitle">Genre: <span class="movie-card__description">${
+    <p class="movie-card__pretitle margin">Genre: <span class="movie-card__description">${
       data.Genre
     }</span><p>
-    <p class="movie-card__pretitle">Runtime: <span class="movie-card__description">${
+    <p class="movie-card__pretitle margin">Runtime: <span class="movie-card__description">${
       data.Runtime
     }</span></p>`;
 
     let filmButtons = document.createElement('div');
-    filmButtons.innerHTML = `<button class="movie-card__button">Удалить из просмотренных</button>
-    <button class="movie-card__button">Запланировать просмотр</button>
-    <button class="movie-card__button">Добавить в избранное</button>`;
+    filmButtons.innerHTML = `${this.buttonWatchedFilm}${
+      this.buttonPlanWatching
+    }${this.buttonAddFilmInFav}`;
 
     let filmInfo = document.createElement('div');
     filmInfo.classList.add('movie-card__info');
