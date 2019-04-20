@@ -17,13 +17,6 @@ let button = document.createElement('button');
 let hist = window.history;
 
 const library = new Library();
-const search = document.location.search;
-
-//     if (!search) {
-//         document.location.href = '/';
-//     }
-// const params = search.slice(1);
-// document.location.href = `/?redirected=true&page=library&${params}`;
 
 
 

@@ -2,7 +2,7 @@
 
 export default class Library {
     constructor(){
-       this.HTMLmarkup = this.createHTML();
+       let createdHTML = this.createHTML();
     }
 
   createHTML() {
@@ -17,6 +17,11 @@ export default class Library {
     let btnFavorites = document.createElement("button");
     let btnHaveSeen = document.createElement("button");
 
+    btnQueue.classList.add('js-queue');
+    btnFavorites.classList.add('js-favorites');
+    btnHaveSeen.classList.add('js-seen');
+
+    
     let queueArr = JSON.parse(localStorage.getItem('qeue') || '[]');
     let moviesCards = this.renderContent(queueArr);
 
@@ -36,7 +41,7 @@ export default class Library {
 
     btnQueue.addEventListener("click", this.showQueue.bind(this));
 
-    // console.log(container);
+    return container;
   }
 
   renderContent(arr) {
@@ -56,7 +61,7 @@ export default class Library {
 
   showQueue(e) {
     
-    const arr = localStorage.getItem("Queue") || [];
+    const arr = localStorage.getItem("qeue") || [];
     let result = this.renderContent(arr);
   }
 }
