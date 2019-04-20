@@ -4,67 +4,41 @@ export default class FilmView extends EventEmitter {
   constructor() {
     super();
     this.app = document.querySelector('#app');
-    this.header = document.createElement('header');
-    this.header.classList.add('header');
-    this.logo = document.createElement('h1');
-    this.logo.textContent = 'FILM📀TEKA';
-    this.navigation = document.createElement('nav');
-    this.navigation.innerHTML = `<ul class="header-list">
-            <li class="header-list__item">
-                <a href="" class="header-list__itemlink">Главная страница</a>
-            </li>
-            <li class="header-list__item">
-                <a href="" class="header-list__itemlink">Моя фильмотека</a>
-            </li>
-        </ul>`;
-    this.header.append(this.logo, this.navigation);
     this.form = document.createElement('form');
     this.input = document.createElement('input');
     this.form.appendChild(this.input);
     this.form.addEventListener('submit', this.onFilmSearch.bind(this));
     this.cardSection = document.createElement('section');
-    this.app.append(this.header, this.form, this.cardSection);
+    this.app.append(this.form, this.cardSection);
 
-    // this.buttonWatchedFilm =
-    //   '<button class="movie-card__button">Добавить в просмотренные</button>';
-    // this.buttonPlanWatching =
-    //   '<button class="movie-card__button">Запланировать просмотр</button>';
-    // this.buttonAddFilmInFav =
-    //   '<button class="movie-card__button">Добавить в избранное</button>';
-    this.card = null;
-    this.buttonWatchedFilm = null;
-    this.buttonPlanWatching = null;
-    this.buttonAddFilmInFav = null;
+    this.buttonWatchedFilm = document.createElement('button');
+    this.buttonWatchedFilm.classList.add('movie-card__button');
+    this.buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+
+    this.buttonPlanWatching = document.createElement('button');
+    this.buttonPlanWatching.classList.add('movie-card__button');
+    this.buttonPlanWatching.textContent = 'Запланировать просмотр';
+
+    this.buttonAddFilmInFav = document.createElement('button');
+    this.buttonAddFilmInFav.classList.add('movie-card__button');
+    this.buttonAddFilmInFav.textContent = 'Добавить в избранное';
+
+    this.buttonWatchedFilm.addEventListener('click', this.changeValueBtnWatchedFilm.bind(this));
+    this.buttonPlanWatching.addEventListener('click', this.changeValueBtnPlanWatching.bind(this));
+    this.buttonAddFilmInFav.addEventListener('click', this.changeValueBtnAddFav.bind(this));
   }
 
-  initBtns() {
-    this.drawCard(data);
-    this.buttonWatchedFilm.addEventListener(
-      'click',
-      this.changeValueBtnWatchedFilm.bind(this),
-    );
-    this.buttonPlanWatching.addEventListener(
-      'click',
-      this.changeValueBtnPlanWatching.bind(this),
-    );
-    this.buttonAddFilmInFav.addEventListener(
-      'click',
-      this.changeValueBtnAddFav.bind(this),
-    );
-  }
 
-  changeValueBtnWatchedFilm(e) {
-    e.preventDefault();
+
+  changeValueBtnWatchedFilm() {
     this.buttonWatchedFilm.textContent = 'Удалить из просмотренных';
   }
 
-  changeValueBtnPlanWatching(e) {
-    e.preventDefault();
+  changeValueBtnPlanWatching() {
     this.buttonPlanWatching.textContent = 'Убрать просмотр';
   }
 
-  changeValueBtnAddFav(e) {
-    e.preventDefault();
+  changeValueBtnAddFav() {
     this.buttonAddFilmInFav.textContent = 'Убрать из избранных';
   }
 
@@ -109,22 +83,6 @@ export default class FilmView extends EventEmitter {
     }</span></p>`;
 
     let filmButtons = document.createElement('div');
-
-    this.buttonWatchedFilm = document.createElement('button');
-    this.buttonWatchedFilm.classList.add('movie-card__button');
-    this.buttonWatchedFilm.textContent = 'Добавить в просмотренные';
-
-    this.buttonPlanWatching = document.createElement('button');
-    this.buttonPlanWatching.classList.add('movie-card__button');
-    this.buttonPlanWatching.textContent = 'Запланировать просмотр';
-
-    this.buttonAddFilmInFav = document.createElement('button');
-    this.buttonAddFilmInFav.classList.add('movie-card__button');
-    this.buttonAddFilmInFav.textContent = 'Добавить в избранное';
-
-    // filmButtons.innerHTML = `${this.buttonWatchedFilm}${
-    //   this.buttonPlanWatching
-    // }${this.buttonAddFilmInFav}`;
 
     filmButtons.append(
       this.buttonWatchedFilm,
