@@ -11,32 +11,6 @@ export default class FilmView extends EventEmitter {
     this.form.addEventListener('submit', this.onFilmSearch.bind(this));
     this.cardSection = document.createElement('section');
     this.app.append(this.form, this.cardSection);
-
-    // this.buttonWatchedFilm = document.createElement('button');
-    // this.buttonWatchedFilm.dataset.storage = this.isInStorage('watched');
-    // this.buttonWatchedFilm.classList.add('movie-card__button');
-    // this.buttonWatchedFilm.textContent = 'Добавить в просмотренные';
-
-    // this.buttonPlanWatching = document.createElement('button');
-    // this.buttonPlanWatching.classList.add('movie-card__button');
-    // this.buttonPlanWatching.textContent = 'Запланировать просмотр';
-
-    // this.buttonAddFilmInFav = document.createElement('button');
-    // this.buttonAddFilmInFav.classList.add('movie-card__button');
-    // this.buttonAddFilmInFav.textContent = 'Добавить в избранное';
-
-    // this.buttonWatchedFilm.addEventListener(
-    //   'click',
-    //   this.changeValueBtnWatchedFilm.bind(this),
-    // );
-    // this.buttonPlanWatching.addEventListener(
-    //   'click',
-    //   this.changeValueBtnPlanWatching.bind(this),
-    // );
-    // this.buttonAddFilmInFav.addEventListener(
-    //   'click',
-    //   this.changeValueBtnAddFav.bind(this),
-    // );
   }
 
   isInStorage(type, id) {
@@ -64,14 +38,6 @@ export default class FilmView extends EventEmitter {
 
     target.dataset.storage = !storage;
     console.log(storage);
-    // this.buttonWatchedFilm.addEventListener(
-    //   'click',
-    //   this.changeValueWatchedOnAdd.bind(this),
-    // );
-    // this.buttonWatchedFilm.removeEventListener(
-    //   'click',
-    //   this.changeValueBtnWatchedFilm.bind(this),
-    // );
   }
 
   changeValueWatchedOnAdd() {
@@ -139,13 +105,9 @@ export default class FilmView extends EventEmitter {
       buttonAddFilmInFav,
     );
 
-    buttonWatchedFilm.addEventListener(
-      'click',
-      // this.changeValueBtnWatchedFilm.bind(this),
-      event => {
-        this.changeValueBtnWatchedFilm(event, data);
-      },
-    );
+    buttonWatchedFilm.addEventListener('click', event => {
+      this.changeValueBtnWatchedFilm(event, data);
+    });
     buttonPlanWatching.addEventListener(
       'click',
       this.changeValueBtnPlanWatching.bind(this),
@@ -191,14 +153,6 @@ export default class FilmView extends EventEmitter {
     <p class="movie-card__pretitle margin">Runtime: <span class="movie-card__description">${
       data.Runtime
     }</span></p>`;
-
-    // let filmButtons = document.createElement('div');
-
-    // filmButtons.append(
-    //   this.buttonWatchedFilm,
-    //   this.buttonPlanWatching,
-    //   this.buttonAddFilmInFav,
-    // );
 
     let filmInfo = document.createElement('div');
     filmInfo.classList.add('movie-card__info');
