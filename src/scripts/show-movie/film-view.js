@@ -152,7 +152,7 @@ export default class FilmView extends EventEmitter {
       data.Awards
     }</span></p>
     <p class="movie-card__pretitle margin">Rating: <span>${
-      data.Ratings // [0].Value
+      data.Ratings[0].Value
     }</span> <span class="movie-card__votes">${data.imdbVotes} votes</span></p>
     <p class="movie-card__pretitle margin">Actors: <span class="movie-card__description">${
       data.Actors
