@@ -18,6 +18,8 @@ body
     text-align: center
     font-size: 45px
     padding-top: 140px
+    transition-property: padding-top
+    transition-duration: 3s
 
 .form input
     width: 500px
@@ -26,7 +28,10 @@ body
     margin: 55px auto
     display: block
     border: 2px solid $accent
+    transition-property: width
+    transition-duration: 3s
 
+ 
 .card-section
     display: flex
     flex-wrap: wrap
@@ -46,6 +51,7 @@ body
         p 
             font-weight: 700
             padding-bottom: 10px
+            height: 40px
 
         img
             width: 150px
@@ -62,6 +68,8 @@ body
         @include black-button
         width: 90px
         font-size: 16px
+        margin-left: 35px
+
     &__backward-button
         margin-right: 35px
     &__page
@@ -71,7 +79,6 @@ body
         padding-top: 10px
         padding-bottom: 10px
         font-size: 20px
-        margin-right: 35px
         
 
 
