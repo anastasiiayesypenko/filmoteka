@@ -40,6 +40,7 @@ export default class SearchView extends EventEmitter {
   }
 
   initBtns() {
+    this.drawCard(data);
     this.buttonWatchedFilm.addEventListener(
       'click',
       this.changeValueBtnWatchedFilm.bind(this),
@@ -52,7 +53,6 @@ export default class SearchView extends EventEmitter {
       'click',
       this.changeValueBtnAddFav.bind(this),
     );
-    console.log(this.buttonWatchedFilm.textContent);
   }
 
   changeValueBtnWatchedFilm(e) {
@@ -95,7 +95,7 @@ export default class SearchView extends EventEmitter {
       data.Awards
     }</span></p>
     <p class="movie-card__pretitle margin">Rating: <span>${
-      data.Ratings[0].Value
+      data.Ratings // [0].Value
     }</span> <span class="movie-card__votes">${data.imdbVotes} votes</span></p>
     <p class="movie-card__pretitle margin">Actors: <span class="movie-card__description">${
       data.Actors
