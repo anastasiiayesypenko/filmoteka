@@ -8,11 +8,10 @@ import FilmModel from './show-movie/film-model';
 import FilmController from './show-movie/film-controller';
 import Library from './library-section/library';
 
-const model = new SearchModel();
-const view = new SearchView();
-let controller = new SearchController(model, view);
+// const model = new SearchModel();
+// const view = new SearchView();
+// let controller = new SearchController(model, view);
 
-// const filmModel = new FilmModel();
-// const filmView = new FilmView();
-// let filmController = new FilmController(filmModel, filmView);
-
+const filmModel = new FilmModel();
+const filmView = new FilmView();
+let filmController = new FilmController(filmModel, filmView);

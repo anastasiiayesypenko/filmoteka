@@ -1,5 +1,6 @@
 'use strict';
 import EventEmitter from './services/eventemitter';
+import { DH_CHECK_P_NOT_SAFE_PRIME } from 'constants';
 export default class FilmView extends EventEmitter {
   constructor() {
     super();
@@ -11,31 +12,98 @@ export default class FilmView extends EventEmitter {
     this.cardSection = document.createElement('section');
     this.app.append(this.form, this.cardSection);
 
-    this.buttonWatchedFilm = document.createElement('button');
-    this.buttonWatchedFilm.classList.add('movie-card__button');
-    this.buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+    // this.buttonWatchedFilm = document.createElement('button');
+    // this.buttonWatchedFilm.dataset.storage = this.isInStorage('watched');
+    // this.buttonWatchedFilm.classList.add('movie-card__button');
+    // this.buttonWatchedFilm.textContent = 'Добавить в просмотренные';
 
-    this.buttonPlanWatching = document.createElement('button');
-    this.buttonPlanWatching.classList.add('movie-card__button');
-    this.buttonPlanWatching.textContent = 'Запланировать просмотр';
+    // this.buttonPlanWatching = document.createElement('button');
+    // this.buttonPlanWatching.classList.add('movie-card__button');
+    // this.buttonPlanWatching.textContent = 'Запланировать просмотр';
 
-    this.buttonAddFilmInFav = document.createElement('button');
-    this.buttonAddFilmInFav.classList.add('movie-card__button');
-    this.buttonAddFilmInFav.textContent = 'Добавить в избранное';
+    // this.buttonAddFilmInFav = document.createElement('button');
+    // this.buttonAddFilmInFav.classList.add('movie-card__button');
+    // this.buttonAddFilmInFav.textContent = 'Добавить в избранное';
 
-    this.buttonWatchedFilm.addEventListener('click', this.changeValueBtnWatchedFilm.bind(this));
-    this.buttonPlanWatching.addEventListener('click', this.changeValueBtnPlanWatching.bind(this));
-    this.buttonAddFilmInFav.addEventListener('click', this.changeValueBtnAddFav.bind(this));
+    // this.buttonWatchedFilm.addEventListener(
+    //   'click',
+    //   this.changeValueBtnWatchedFilm.bind(this),
+    // );
+    // this.buttonPlanWatching.addEventListener(
+    //   'click',
+    //   this.changeValueBtnPlanWatching.bind(this),
+    // );
+    // this.buttonAddFilmInFav.addEventListener(
+    //   'click',
+    //   this.changeValueBtnAddFav.bind(this),
+    // );
   }
 
+  isInStorage(type, id) {
+    const storage = localStorage.getItem(type);
+    if (!storage) {
+      return false;
+    }
+    return JSON.parse(storage).some(el => el.id === id);
+  }
 
+  changeValueBtnWatchedFilm({ target }, data) {
+    const storage = this.isInStorage('watched');
+    if (storage) {
+      target.textContent = 'Удалить из просмотренных';
+    } else {
+      const getWathced = JSON.parse(localStorage.getItem('watched') || '[]');
+      getWathced.push({
+        Title: data.Title,
+        Poster: data.Poster,
+        Ratings: data.Ratings[0].Value,
+      });
+      localStorage.setItem('watched', JSON.stringify(getWathced));
+      this.buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+    }
 
-  changeValueBtnWatchedFilm() {
-    this.buttonWatchedFilm.textContent = 'Удалить из просмотренных';
+    target.dataset.storage = !storage;
+    console.log(storage);
+    // this.buttonWatchedFilm.addEventListener(
+    //   'click',
+    //   this.changeValueWatchedOnAdd.bind(this),
+    // );
+    // this.buttonWatchedFilm.removeEventListener(
+    //   'click',
+    //   this.changeValueBtnWatchedFilm.bind(this),
+    // );
+  }
+
+  changeValueWatchedOnAdd() {
+    this.buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+    this.buttonWatchedFilm.addEventListener(
+      'click',
+      this.changeValueBtnWatchedFilm.bind(this),
+    );
+    this.buttonWatchedFilm.removeEventListener(
+      'click',
+      this.changeValueWatchedOnAdd.bind(this),
+    );
   }
 
   changeValueBtnPlanWatching() {
     this.buttonPlanWatching.textContent = 'Убрать просмотр';
+    this.buttonPlanWatching.addEventListener(
+      'click',
+      this.changeValuePlanOnAdd.bind(this),
+    );
+    this.buttonPlanWatching.removeEventListener(
+      'click',
+      this.changeValueBtnPlanWatching.bind(this),
+    );
+  }
+
+  changeValuePlanOnAdd() {
+    this.buttonPlanWatching.textContent = 'Запланировать просмотр';
+    this.buttonPlanWatching.addEventListener(
+      'click',
+      this.changeValueBtnPlanWatching.bind(this),
+    );
   }
 
   changeValueBtnAddFav() {
@@ -48,7 +116,49 @@ export default class FilmView extends EventEmitter {
     this.emit('search', value);
     this.form.reset();
   }
-  drawCard(data) {
+
+  renderButtons(data) {
+    let buttonWatchedFilm = document.createElement('button');
+    buttonWatchedFilm.dataset.storage = this.isInStorage('watched');
+    buttonWatchedFilm.classList.add('movie-card__button');
+    buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+
+    let buttonPlanWatching = document.createElement('button');
+    buttonPlanWatching.classList.add('movie-card__button');
+    buttonPlanWatching.textContent = 'Запланировать просмотр';
+
+    let buttonAddFilmInFav = document.createElement('button');
+    buttonAddFilmInFav.classList.add('movie-card__button');
+    buttonAddFilmInFav.textContent = 'Добавить в избранное';
+
+    let filmButtons = document.createElement('div');
+
+    filmButtons.append(
+      buttonWatchedFilm,
+      buttonPlanWatching,
+      buttonAddFilmInFav,
+    );
+
+    buttonWatchedFilm.addEventListener(
+      'click',
+      // this.changeValueBtnWatchedFilm.bind(this),
+      event => {
+        this.changeValueBtnWatchedFilm(event, data);
+      },
+    );
+    buttonPlanWatching.addEventListener(
+      'click',
+      this.changeValueBtnPlanWatching.bind(this),
+    );
+    buttonAddFilmInFav.addEventListener(
+      'click',
+      this.changeValueBtnAddFav.bind(this),
+    );
+
+    return filmButtons;
+  }
+
+  renderCard(data) {
     this.cardSection.innerHTML = '';
 
     this.card = document.createElement('div');
@@ -82,22 +192,25 @@ export default class FilmView extends EventEmitter {
       data.Runtime
     }</span></p>`;
 
-    let filmButtons = document.createElement('div');
+    // let filmButtons = document.createElement('div');
 
-    filmButtons.append(
-      this.buttonWatchedFilm,
-      this.buttonPlanWatching,
-      this.buttonAddFilmInFav,
-    );
+    // filmButtons.append(
+    //   this.buttonWatchedFilm,
+    //   this.buttonPlanWatching,
+    //   this.buttonAddFilmInFav,
+    // );
 
     let filmInfo = document.createElement('div');
     filmInfo.classList.add('movie-card__info');
 
-    filmInfo.append(filmArticle, filmButtons);
+    filmInfo.append(filmArticle, this.renderButtons(data));
 
     this.card.append(filmImage, filmInfo);
     this.cardSection.appendChild(this.card);
+  }
 
-    return this.card;
+  drawCard(data) {
+    const card = this.renderCard(data);
+    return card;
   }
 }
