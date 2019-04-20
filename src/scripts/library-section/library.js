@@ -7,6 +7,7 @@ export default class Library {
 
   createHTML() {
     let container = document.createElement("div");
+    container.classList.add("button-container");
     container.classList.add("container");
 
     let linksList = document.createElement("ul");
@@ -16,7 +17,12 @@ export default class Library {
     let btnQueue = document.createElement("button");
     let btnFavorites = document.createElement("button");
     let btnHaveSeen = document.createElement("button");
-
+    btnQueue.classList.add('js-queue');
+    btnFavorites.classList.add('js-favorites');
+    btnHaveSeen.classList.add('js-seen');
+    btnQueue.classList.add('button-container__button');
+    btnFavorites.classList.add('button-container__button');
+    btnHaveSeen.classList.add('button-container__button');
     btnQueue.classList.add("js-queue");
     btnFavorites.classList.add("js-favorites");
     btnHaveSeen.classList.add("js-seen");

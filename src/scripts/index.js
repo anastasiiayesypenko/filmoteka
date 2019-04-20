@@ -10,10 +10,25 @@ import Library from "./library-section/library";
 
 const model = new SearchModel();
 const view = new SearchView();
-let controller = new SearchController(model, view);
+const controller = new SearchController(model, view);
 
-const filmModel = new FilmModel();
-const filmView = new FilmView();
-let filmController = new FilmController(filmModel, filmView);
+let hstr = history.state;
+let numberOfEntries = window.history.length;
+
+console.log(hstr, numberOfEntries);
+
+
+
+
+
+// const filmModel = new FilmModel();
+// const filmView = new FilmView();
+// let filmController = new FilmController(filmModel, filmView);
+
+// let controller = new SearchController(model, view);
+
+// const filmModel = new FilmModel();
+// const filmView = new FilmView();
+// let filmController = new FilmController(filmModel, filmView);
 
 const library = new Library();
