@@ -63,7 +63,6 @@ export default class Library {
   showQueue(e) {
     const arr = JSON.parse(localStorage.getItem("qeue")) || [];
     let result = this.renderContent(arr);
-    console.log(result);
     let container = document.querySelector('.js-movies-cards');
     container.textContent = '';
     container.append(result);
@@ -72,7 +71,6 @@ export default class Library {
   showFavorites(e) {
     const arr = JSON.parse(localStorage.getItem("favorites")) || [];
     let result = this.renderContent(arr);
-    console.log(result);
     let container = document.querySelector('.js-movies-cards');
     container.textContent = '';
     container.append(result);
@@ -81,7 +79,6 @@ export default class Library {
   showSeen(e) {
     const arr = JSON.parse(localStorage.getItem("haveseen")) || [];
     let result = this.renderContent(arr);
-    console.log(result);
     let container = document.querySelector('.js-movies-cards');
     container.textContent = '';
     container.append(result);
