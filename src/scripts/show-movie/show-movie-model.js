@@ -1,9 +1,9 @@
 'use strict';
 export default class SearchModel {
   constructor() {}
-  fetchFilmByTitle(title) {
+  fetchFilmByTitle(imdbId) {
     return new Promise(resolve => {
-      let film = fetch(`http://www.omdbapi.com/?i=${title}&apikey=c6c6013b`)
+      let film = fetch(`http://www.omdbapi.com/?i=${imdbId}&apikey=c6c6013b`)
         .then(response => {
           if (response.ok) {
             return response.json();
