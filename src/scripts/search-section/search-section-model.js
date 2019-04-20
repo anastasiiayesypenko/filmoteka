@@ -14,6 +14,7 @@ export default class SearchModel {
             })
             .then(data => {
                 resolve(data);
+
             })
             .catch(error => console.log(error));
         });
