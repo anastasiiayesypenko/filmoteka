@@ -1,5 +1,6 @@
 'use strict';
 import EventEmitter from './services/eventemitter';
+import { DH_CHECK_P_NOT_SAFE_PRIME } from 'constants';
 export default class FilmView extends EventEmitter {
   constructor() {
     super();
@@ -10,36 +11,82 @@ export default class FilmView extends EventEmitter {
     this.form.addEventListener('submit', this.onFilmSearch.bind(this));
     this.cardSection = document.createElement('section');
     this.app.append(this.form, this.cardSection);
-
-    this.buttonWatchedFilm = document.createElement('button');
-    this.buttonWatchedFilm.classList.add('movie-card__button');
-    this.buttonWatchedFilm.textContent = 'Добавить в просмотренные';
-
-    this.buttonPlanWatching = document.createElement('button');
-    this.buttonPlanWatching.classList.add('movie-card__button');
-    this.buttonPlanWatching.textContent = 'Запланировать просмотр';
-
-    this.buttonAddFilmInFav = document.createElement('button');
-    this.buttonAddFilmInFav.classList.add('movie-card__button');
-    this.buttonAddFilmInFav.textContent = 'Добавить в избранное';
-
-    this.buttonWatchedFilm.addEventListener('click', this.changeValueBtnWatchedFilm.bind(this));
-    this.buttonPlanWatching.addEventListener('click', this.changeValueBtnPlanWatching.bind(this));
-    this.buttonAddFilmInFav.addEventListener('click', this.changeValueBtnAddFav.bind(this));
   }
 
-
-
-  changeValueBtnWatchedFilm() {
-    this.buttonWatchedFilm.textContent = 'Удалить из просмотренных';
+  isInStorage(type, id) {
+    const storage = localStorage.getItem(type);
+    console.log(storage);
+    if (!storage) {
+      return false;
+    }
+    return JSON.parse(storage).some(el => el.id === id);
   }
 
-  changeValueBtnPlanWatching() {
-    this.buttonPlanWatching.textContent = 'Убрать просмотр';
+  changeValueBtnWatchedFilm({ target }, data) {
+    const storage = this.isInStorage('watched');
+    if (storage) {
+      console.log(storage);
+      const filterArr = JSON.parse(localStorage.getItem('watched')).filter(
+        el => el.imdbID !== data.imdbID,
+      );
+      localStorage.setItem('watched', JSON.stringify(filterArr));
+      target.textContent = 'Добавить в просмотренные';
+    } else {
+      const getWatсhed = JSON.parse(localStorage.getItem('watched') || '[]');
+      getWatсhed.push({
+        Title: data.Title,
+        Poster: data.Poster,
+        Ratings: data.Ratings[0].Value,
+        imdbID: data.imdbID,
+      });
+      localStorage.setItem('watched', JSON.stringify(getWatсhed));
+      target.textContent = 'Удалить из просмотренных';
+    }
+    target.dataset.storage = !storage;
   }
 
-  changeValueBtnAddFav() {
-    this.buttonAddFilmInFav.textContent = 'Убрать из избранных';
+  changeValueBtnPlanWatching({ target }, data) {
+    const storage = this.isInStorage('plan');
+    if (storage) {
+      const filterArr = JSON.parse(localStorage.getItem('plan')).filter(
+        el => el.imdbID !== data.imdbID,
+      );
+      localStorage.setItem('plan', JSON.stringify(filterArr));
+      target.textContent = 'Запланировать просмотр';
+    } else {
+      const getPlanned = JSON.parse(localStorage.getItem('plan') || '[]');
+      getPlanned.push({
+        Title: data.Title,
+        Poster: data.Poster,
+        Ratings: data.Ratings[0].Value,
+        imdbID: data.imdbID,
+      });
+      localStorage.setItem('plan', JSON.stringify(getPlanned));
+      target.textContent = 'Убрать просмотр';
+    }
+    target.dataset.storage = !storage;
+  }
+
+  changeValueBtnAddFav({ target }, data) {
+    const storage = this.isInStorage('add');
+    if (storage) {
+      const filterArr = JSON.parse(localStorage.getItem('add')).filter(
+        el => el.imdbID !== data.imdbID,
+      );
+      localStorage.setItem('add', JSON.stringify(filterArr));
+      target.textContent = 'Добавить в избранное';
+    } else {
+      const getAdded = JSON.parse(localStorage.getItem('add') || '[]');
+      getAdded.push({
+        Title: data.Title,
+        Poster: data.Poster,
+        Ratings: data.Ratings[0].Value,
+        imdbID: data.imdbID,
+      });
+      localStorage.setItem('add', JSON.stringify(getAdded));
+      target.textContent = 'Убрать из избранных';
+    }
+    target.dataset.storage = !storage;
   }
 
   onFilmSearch(event) {
@@ -48,7 +95,45 @@ export default class FilmView extends EventEmitter {
     this.emit('search', value);
     this.form.reset();
   }
-  drawCard(data) {
+
+  renderButtons(data) {
+    let buttonWatchedFilm = document.createElement('button');
+    buttonWatchedFilm.dataset.storage = this.isInStorage('watched');
+    buttonWatchedFilm.classList.add('movie-card__button');
+    buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+
+    let buttonPlanWatching = document.createElement('button');
+    buttonPlanWatching.dataset.storage = this.isInStorage('watched');
+    buttonPlanWatching.classList.add('movie-card__button');
+    buttonPlanWatching.textContent = 'Запланировать просмотр';
+
+    let buttonAddFilmInFav = document.createElement('button');
+    buttonAddFilmInFav.dataset.storage = this.isInStorage('watched');
+    buttonAddFilmInFav.classList.add('movie-card__button');
+    buttonAddFilmInFav.textContent = 'Добавить в избранное';
+
+    let filmButtons = document.createElement('div');
+
+    filmButtons.append(
+      buttonWatchedFilm,
+      buttonPlanWatching,
+      buttonAddFilmInFav,
+    );
+
+    buttonWatchedFilm.addEventListener('click', event => {
+      this.changeValueBtnWatchedFilm(event, data);
+    });
+    buttonPlanWatching.addEventListener('click', event => {
+      this.changeValueBtnPlanWatching(event, data);
+    });
+    buttonAddFilmInFav.addEventListener('click', event => {
+      this.changeValueBtnAddFav(event, data);
+    });
+
+    return filmButtons;
+  }
+
+  renderCard(data) {
     this.cardSection.innerHTML = '';
 
     this.card = document.createElement('div');
@@ -67,7 +152,7 @@ export default class FilmView extends EventEmitter {
       data.Awards
     }</span></p>
     <p class="movie-card__pretitle margin">Rating: <span>${
-      data.Ratings // [0].Value
+      data.Ratings[0].Value
     }</span> <span class="movie-card__votes">${data.imdbVotes} votes</span></p>
     <p class="movie-card__pretitle margin">Actors: <span class="movie-card__description">${
       data.Actors
@@ -82,22 +167,17 @@ export default class FilmView extends EventEmitter {
       data.Runtime
     }</span></p>`;
 
-    let filmButtons = document.createElement('div');
-
-    filmButtons.append(
-      this.buttonWatchedFilm,
-      this.buttonPlanWatching,
-      this.buttonAddFilmInFav,
-    );
-
     let filmInfo = document.createElement('div');
     filmInfo.classList.add('movie-card__info');
 
-    filmInfo.append(filmArticle, filmButtons);
+    filmInfo.append(filmArticle, this.renderButtons(data));
 
     this.card.append(filmImage, filmInfo);
     this.cardSection.appendChild(this.card);
+  }
 
-    return this.card;
+  drawCard(data) {
+    const card = this.renderCard(data);
+    return card;
   }
 }

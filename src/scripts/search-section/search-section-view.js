@@ -33,7 +33,9 @@ export default class SearchView extends EventEmitter {
         this.form.addEventListener('submit', this.onFilmSearch.bind(this));
 
         this.cardSection = document.createElement('section');
-        this.cardSection.classList.add('card-section');
+        this.cardList = document.createElement('ul');
+        this.cardList.classList.add('card-section');
+        this.cardSection.appendChild(this.cardList);
 
         this.forwardButton = document.createElement('button');
         this.forwardButton.classList.add('pagination__forward-button');
@@ -62,7 +64,7 @@ export default class SearchView extends EventEmitter {
     renderLibrary(e){
         e.preventDefault();
         this.title.remove();
-        this.input.remove();
+        this.form.remove();
         if(this.forwardButton) this.forwardButton.remove();
         if(this.backwardButton) this.backwardButton.remove();
         if(this.page) this.page.remove();
@@ -88,9 +90,11 @@ export default class SearchView extends EventEmitter {
         if (this.page.textContent >= amountOfPages) {
             this.forwardButton.classList.add('hidden');
         }
-        this.cardSection.innerHTML = '';
+        this.cardList.innerHTML = '';
         let markup = filmList.map(item => {
-            let card = document.createElement('div');
+            let card = document.createElement('li');
+            let link = document.createElement('a');
+            card.classList.add('card');
             let filmTitle = document.createElement('p');
             let filmImage = document.createElement('img');
             filmTitle.textContent = item.Title;
@@ -99,8 +103,9 @@ export default class SearchView extends EventEmitter {
                 Poster = src.default;
             }
             filmImage.setAttribute('src', Poster);
-            card.append(filmTitle, filmImage);
-            this.cardSection.appendChild(card);
+            card.appendChild(link);
+            link.append(filmTitle, filmImage);
+            this.cardList.appendChild(card);
         });
         this.paginationWrapper.classList.add('pagination');
     }
