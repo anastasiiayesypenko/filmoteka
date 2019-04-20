@@ -27,6 +27,13 @@ export default class Library {
     let moviesCards = this.renderContent(queueArr);
 
     moviesCards.classList.add("js-movies-cards");
+    moviesCards.style.display = 'flex'
+    moviesCards.style.flexWrap = 'wrap'
+    moviesCards.style.justifyContent = 'space-between'
+    
+
+
+
 
     btnQueue.textContent = "Очередь просмотра";
     btnFavorites.textContent = "Избранные";
@@ -51,7 +58,7 @@ export default class Library {
     let result = document.createElement("div");
     let content = arr.reduce((acc, el) => {
       acc += `
-    <div>
+    <div style = "padding:10px">
         <h3>${el.Title}</h3>
         <img src="${el.Poster}" alt="${el.Title}">
     </div>
