@@ -2,8 +2,7 @@
 
 export default class Library {
     constructor(){
-       let createdHTML = this.createHTML();
-        console.log(createdHTML);
+       this.HTMLmarkup = this.createHTML();
     }
 
   createHTML() {
@@ -37,7 +36,7 @@ export default class Library {
 
     btnQueue.addEventListener("click", this.showQueue.bind(this));
 
-    console.log(container);
+    // console.log(container);
   }
 
   renderContent(arr) {
@@ -59,7 +58,6 @@ export default class Library {
     
     const arr = localStorage.getItem("Queue") || [];
     let result = this.renderContent(arr);
-    console.log(result);
   }
 }
 
