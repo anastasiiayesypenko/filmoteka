@@ -13,9 +13,6 @@ const view = new SearchView();
 const controller = new SearchController(model, view);
 
 
-let button = document.createElement('button');
-let hist = window.history;
-
 const library = new Library();
 
 
