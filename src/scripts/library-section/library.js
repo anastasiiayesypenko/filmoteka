@@ -18,9 +18,10 @@ export default class Library {
     let btnFavorites = document.createElement("button");
     let btnHaveSeen = document.createElement("button");
 
-    btnQueue.classList.add("button-container__button");
+    btnQueue.classList.add("button-container__button" , "active");
     btnFavorites.classList.add("button-container__button");
     btnHaveSeen.classList.add("button-container__button");
+    linksList.classList.add('button-list');
 
     let queueArr = JSON.parse(localStorage.getItem("qeue") || "[]");
     let moviesCards = this.renderContent(queueArr);
