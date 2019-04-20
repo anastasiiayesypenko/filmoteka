@@ -17,21 +17,15 @@ export default class Library {
     let btnQueue = document.createElement("button");
     let btnFavorites = document.createElement("button");
     let btnHaveSeen = document.createElement("button");
-    btnQueue.classList.add('js-queue');
-    btnFavorites.classList.add('js-favorites');
-    btnHaveSeen.classList.add('js-seen');
-    btnQueue.classList.add('button-container__button');
-    btnFavorites.classList.add('button-container__button');
-    btnHaveSeen.classList.add('button-container__button');
-    btnQueue.classList.add("js-queue");
-    btnFavorites.classList.add("js-favorites");
-    btnHaveSeen.classList.add("js-seen");
+
+    btnQueue.classList.add("button-container__button");
+    btnFavorites.classList.add("button-container__button");
+    btnHaveSeen.classList.add("button-container__button");
 
     let queueArr = JSON.parse(localStorage.getItem("qeue") || "[]");
     let moviesCards = this.renderContent(queueArr);
 
     moviesCards.classList.add("js-movies-cards");
-   
 
     btnQueue.textContent = "Очередь просмотра";
     btnFavorites.textContent = "Избранные";
@@ -47,6 +41,7 @@ export default class Library {
     btnQueue.addEventListener("click", this.showQueue.bind(this));
     btnFavorites.addEventListener("click", this.showFavorites.bind(this));
     btnHaveSeen.addEventListener("click", this.showSeen.bind(this));
+    linksList.addEventListener("click", this.chooseActive.bind(this));
 
     return container;
   }
@@ -69,25 +64,35 @@ export default class Library {
   showQueue(e) {
     const arr = JSON.parse(localStorage.getItem("qeue")) || [];
     let result = this.renderContent(arr);
-    let container = document.querySelector('.js-movies-cards');
-    container.textContent = '';
+    let container = document.querySelector(".js-movies-cards");
+    container.textContent = "";
     container.append(result);
   }
 
   showFavorites(e) {
     const arr = JSON.parse(localStorage.getItem("favorites")) || [];
     let result = this.renderContent(arr);
-    let container = document.querySelector('.js-movies-cards');
-    container.textContent = '';
+    let container = document.querySelector(".js-movies-cards");
+    container.textContent = "";
     container.append(result);
   }
 
   showSeen(e) {
     const arr = JSON.parse(localStorage.getItem("haveseen")) || [];
     let result = this.renderContent(arr);
-    let container = document.querySelector('.js-movies-cards');
-    container.textContent = '';
+    let container = document.querySelector(".js-movies-cards");
+    container.textContent = "";
     container.append(result);
+  }
 
+  chooseActive(e) {
+    let btns = document.querySelectorAll(".button-container__button");
+    [...btns].forEach(btn => {
+      if (e.target === btn) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
   }
 }
