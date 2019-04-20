@@ -10,9 +10,14 @@ import Library from './library-section/library';
 
 const model = new SearchModel();
 const view = new SearchView();
-let controller = new SearchController(model, view);
+const controller = new SearchController(model, view);
 
-// const filmModel = new FilmModel();
-// const filmView = new FilmView();
-// let filmController = new FilmController(filmModel, filmView);
 
+let button = document.createElement('button');
+let hist = window.history;
+button.addEventListener('click', doSmth);
+button.textContent = 'AAAAAAAAAAAAAAAAAAAAAAAA';
+controller.view.app.append(button);
+function doSmth() {
+    history.pushState(null, null, "library.html");
+}

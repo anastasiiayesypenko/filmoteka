@@ -1,5 +1,7 @@
 'use strict';
 import EventEmitter from "./services/eventemitter";
+import Library from "../library-section/library";
+let library = new Library();
 import * as src from './image/no-image.jpg';
 export default class SearchView extends EventEmitter {
     constructor() {
@@ -13,10 +15,10 @@ export default class SearchView extends EventEmitter {
         this.navigation.innerHTML = 
         `<ul class="header-list">
             <li class="header-list__item">
-                <a href="" class="header-list__itemlink">Главная страница</a>
+                <a href="" class="header-list__itemlink main-link">Главная страница</a>
             </li>
             <li class="header-list__item">
-                <a href="" class="header-list__itemlink">Моя фильмотека</a>
+                <a href="" class="header-list__itemlink library-link">Моя фильмотека</a>
             </li>
         </ul>`;
         this.header.append(this.logo, this.navigation);
@@ -51,6 +53,9 @@ export default class SearchView extends EventEmitter {
         this.footer.classList.add('footer');
         this.footer.textContent = 'Made with ❤️ by Kolya Raketa';
         this.app.append(this.header, this.title, this.form, this.cardSection, this.paginationWrapper, this.footer);
+        this.mainLink = document.querySelector('.main-link');
+        this.libraryLink = document.querySelector('.library-link');
+        this.libraryLink.addEventListener('click', library.createHTML);
     }
     onFilmSearch(event) {
         event.preventDefault();
