@@ -17,19 +17,15 @@ export default class Library {
     let btnQueue = document.createElement("button");
     let btnFavorites = document.createElement("button");
     let btnHaveSeen = document.createElement("button");
-
-<<<<<<< HEAD
     btnQueue.classList.add('js-queue');
     btnFavorites.classList.add('js-favorites');
     btnHaveSeen.classList.add('js-seen');
     btnQueue.classList.add('button-container__button');
     btnFavorites.classList.add('button-container__button');
     btnHaveSeen.classList.add('button-container__button');
-=======
     btnQueue.classList.add("js-queue");
     btnFavorites.classList.add("js-favorites");
     btnHaveSeen.classList.add("js-seen");
->>>>>>> 748e6ebe9260de14bee92ef5e3c2264f04604779
 
     let queueArr = JSON.parse(localStorage.getItem("qeue") || "[]");
     let moviesCards = this.renderContent(queueArr);
@@ -73,8 +69,6 @@ export default class Library {
   showQueue(e) {
     const arr = JSON.parse(localStorage.getItem("qeue")) || [];
     let result = this.renderContent(arr);
-<<<<<<< HEAD
-=======
     console.log(result);
     let container = document.querySelector('.js-movies-cards');
     container.textContent = '';
@@ -88,7 +82,6 @@ export default class Library {
     let container = document.querySelector('.js-movies-cards');
     container.textContent = '';
     container.append(result);
->>>>>>> 748e6ebe9260de14bee92ef5e3c2264f04604779
   }
 
   showSeen(e) {

@@ -25,10 +25,10 @@ console.log(hstr, numberOfEntries);
 // const filmView = new FilmView();
 // let filmController = new FilmController(filmModel, filmView);
 
-let controller = new SearchController(model, view);
+// let controller = new SearchController(model, view);
 
-const filmModel = new FilmModel();
-const filmView = new FilmView();
-let filmController = new FilmController(filmModel, filmView);
+// const filmModel = new FilmModel();
+// const filmView = new FilmView();
+// let filmController = new FilmController(filmModel, filmView);
 
 const library = new Library();
