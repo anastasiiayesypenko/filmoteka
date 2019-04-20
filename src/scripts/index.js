@@ -13,14 +13,6 @@ const view = new SearchView();
 const controller = new SearchController(model, view);
 
 
-let button = document.createElement('button');
-let hist = window.history;
-button.addEventListener('click', doSmth);
-button.textContent = 'AAAAAAAAAAAAAAAAAAAAAAAA';
-controller.view.app.append(button);
-function doSmth() {
-    history.pushState(null, null, "library.html");
-}
 
 const library = new Library();
 
