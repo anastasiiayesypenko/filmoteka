@@ -26,11 +26,6 @@ export default class Library {
     let queueArr = JSON.parse(localStorage.getItem('qeue') || '[]');
     let moviesCards = this.renderContent(queueArr);
 
-    moviesCards.classList.add('js-movies-cards');
-    moviesCards.style.display = 'flex';
-    moviesCards.style.flexWrap = 'wrap';
-    moviesCards.style.justifyContent = 'space-between';
-
     btnQueue.textContent = 'Очередь просмотра';
     btnFavorites.textContent = 'Избранные';
     btnHaveSeen.textContent = 'Просмотренные';
