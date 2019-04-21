@@ -163,7 +163,7 @@ export default class FilmView extends EventEmitter {
     }</span></p>
     <p class="movie-card__pretitle margin">Genre: <span class="movie-card__description">${
       data.Genre
-    }</span><p>
+    }</span></p>
     <p class="movie-card__pretitle margin">Runtime: <span class="movie-card__description">${
       data.Runtime
     }</span></p>`;

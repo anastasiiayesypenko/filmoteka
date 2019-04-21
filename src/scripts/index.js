@@ -25,4 +25,4 @@ console.log(hstr, numberOfEntries, 'window.history', window.history, rarararara)
 
 // let controller = new SearchController(model, view);
 
-const library = new Library();
+// const library = new Library();
