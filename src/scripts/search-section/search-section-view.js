@@ -42,41 +42,6 @@ export default class SearchView extends EventEmitter {
 
     this.cardMovie = document.createElement('section');
   }
-  drawMain() {
-    let title = document.createElement('h2');
-    title.classList.add('h2');
-    title.textContent = 'Персональная фильмотека';
-
-    let form = document.createElement('form');
-    let input = document.createElement('input');
-    form.appendChild(input);
-    form.classList.add('form');
-    form.addEventListener('submit', this.onFilmSearch.bind(this));
-
-    let forwardButton = document.createElement('button');
-    forwardButton.classList.add('pagination__forward-button');
-    let backwardButton = document.createElement('button');
-    backwardButton.classList.add('pagination__backward-button');
-    let page = document.createElement('div');
-    page.classList.add('pagination__page');
-    let paginationWrapper = document.createElement('div');
-
-    forwardButton.textContent = 'Вперед';
-    backwardButton.textContent = 'Назад';
-    backwardButton.addEventListener('click', this.onBackwardClick.bind(this));
-    forwardButton.addEventListener('click', this.onForwardClick.bind(this));
-    let cardList = document.createElement('ul');
-    cardList.classList.add('card-section');
-    this.cardSection.append(cardList);
-    this.wrapper.append(title, form);
-    paginationWrapper.append(backwardButton, page, forwardButton);
-
-    this.cardSection.append(paginationWrapper);
-    paginationWrapper.classList.add('hidden', 'pagination-wrapper');
-
-    let btnLibrary = document.querySelector('.library-link');
-    btnLibrary.addEventListener('click', this.renderLibrary.bind(this));
-  }
 
   renderLibrary(e) {
     e.preventDefault();
@@ -157,9 +122,44 @@ export default class SearchView extends EventEmitter {
       card.appendChild(link);
       cardList.appendChild(card);
     });
-
-
   }
+    drawMain() {
+        let title = document.createElement('h2');
+        title.classList.add('h2');
+        title.textContent = 'Персональная фильмотека';
+
+        let form = document.createElement('form');
+        let input = document.createElement('input');
+        form.appendChild(input);
+        form.classList.add('form');
+        // form.addEventListener('submit', this.onFilmSearch.bind(this));
+        input.addEventListener('input', this.onFilmSearch.bind(this));
+
+        let forwardButton = document.createElement('button');
+        forwardButton.classList.add('pagination__forward-button');
+        let backwardButton = document.createElement('button');
+        backwardButton.classList.add('pagination__backward-button');
+        let page = document.createElement('div');
+        page.classList.add('pagination__page');
+        let paginationWrapper = document.createElement('div');
+        
+        forwardButton.textContent = 'Вперед';
+        backwardButton.textContent = 'Назад';
+        backwardButton.addEventListener('click', this.onBackwardClick.bind(this));
+        forwardButton.addEventListener('click', this.onForwardClick.bind(this));
+        let cardList = document.createElement('ul');
+        cardList.classList.add('card-section');
+        this.cardSection.append(cardList);
+        this.wrapper.append(title, form);
+        paginationWrapper.append(backwardButton, page, forwardButton);
+        
+        this.cardSection.append(paginationWrapper);
+        paginationWrapper.classList.add('hidden', 'pagination-wrapper');
+
+        let btnLibrary = document.querySelector('.library-link');
+        btnLibrary.addEventListener('click', this.renderLibrary.bind(this));
+}
+
   showId(event) {
     event.preventDefault();
     history.pushState(null, null, event.target.parentNode.href);
