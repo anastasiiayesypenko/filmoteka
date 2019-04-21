@@ -36,6 +36,8 @@ export default class SearchView extends EventEmitter {
     this.mainLink.addEventListener('click', this.renderMain.bind(this));
     this.cardSection = document.createElement('section');
     this.app.append(this.cardSection);
+
+    // this.card = this.dataMovie;
   }
   drawMain() {
     let title = document.createElement('h2');
@@ -72,8 +74,7 @@ export default class SearchView extends EventEmitter {
 
   renderLibrary(e) {
     e.preventDefault();
-    this.title.remove();
-    this.form.remove();
+    this.wrapper.remove();
     this.state = history;
     window.history.pushState(null, null, 'library.html');
     if (this.forwardButton) this.forwardButton.remove();
@@ -259,13 +260,6 @@ export default class SearchView extends EventEmitter {
     target.dataset.storage = !storage;
   }
 
-  // onFilmSearch(event) {
-  //   event.preventDefault();
-  //   let { value } = this.input;
-  //   this.emit('search', value);
-  //   this.form.reset();
-  // }
-
   renderButtons(data) {
     let buttonWatchedFilm = document.createElement('button');
     buttonWatchedFilm.dataset.storage = this.isInStorage('watched');
@@ -346,8 +340,22 @@ export default class SearchView extends EventEmitter {
     this.cardSection.appendChild(this.card);
   }
 
-  drawMovie(data) {
+  drawMovie(data = this.data) {
+    this.data = data;
     const card = this.renderCard(data);
-    return card;
   }
+
+  // ===================================================
+  // renderMovie(e) {
+  //   e.preventDefault();
+  //   this.wrapper.remove();
+  //   this.cardSection.remove();
+  //   this.state = history;
+  //   window.history.pushState(null, null, 'movie.html');
+  //   if (this.forwardButton) this.forwardButton.remove();
+  //   if (this.backwardButton) this.backwardButton.remove();
+  //   if (this.page) this.page.remove();
+  //   this.cardSection.textContent = '';
+  //   this.cardSection.append(this.drawMovie());
+  // }
 }
