@@ -21,55 +21,72 @@ export default class SearchView extends EventEmitter {
                 <a href="" class="header-list__itemlink library-link">Моя фильмотека</a>
             </li>
         </ul>`;
-        this.header.append(this.logo, this.navigation);
-        this.title = document.createElement('h2');
-        this.title.classList.add('h2');
-        this.title.textContent = 'Персональная фильмотека';
-
-        this.form = document.createElement('form');
-        this.input = document.createElement('input');
-        this.form.appendChild(this.input);
-        this.form.classList.add('form');
-        this.form.addEventListener('submit', this.onFilmSearch.bind(this));
-
+        this.wrapper = document.createElement('div');
         this.cardSection = document.createElement('section');
-        this.cardList = document.createElement('ul');
-        this.cardList.classList.add('card-section');
-        this.cardSection.appendChild(this.cardList);
-
-        this.forwardButton = document.createElement('button');
-        this.forwardButton.classList.add('pagination__forward-button');
-        this.backwardButton = document.createElement('button');
-        this.backwardButton.classList.add('pagination__backward-button');
-        this.page = document.createElement('div');
-        this.page.classList.add('pagination__page');
-        this.paginationWrapper = document.createElement('div');
-        this.forwardButton.textContent = 'Вперед';
-        this.backwardButton.textContent = 'Назад';
-        this.backwardButton.addEventListener('click', this.onBackwardClick.bind(this));
-        this.forwardButton.addEventListener('click', this.onForwardClick.bind(this));
-        this.paginationWrapper.append(this.backwardButton, this.page, this.forwardButton);
-        this.paginationWrapper.classList.add('hidden');
+        this.header.append(this.logo, this.navigation);
+        this.app.appendChild(this.header);
+        this.drawMain.bind(this)();
 
         this.footer = document.createElement('footer');
         this.footer.classList.add('footer');
         this.footer.textContent = 'Made with ❤️ by Kolya Raketa';
-        this.app.append(this.header, this.title, this.form, this.cardSection, this.paginationWrapper, this.footer);
+        this.app.append(this.wrapper, this.cardSection, this.footer);
         this.mainLink = document.querySelector('.main-link');
         this.libraryLink = document.querySelector('.library-link');
         this.libraryLink.addEventListener('click', this.renderLibrary.bind(this));
+        this.mainLink.addEventListener('click', this.renderMain.bind(this));
+    }
+    drawMain() {
+        let title = document.createElement('h2');
+        title.classList.add('h2');
+        title.textContent = 'Персональная фильмотека';
 
+        let form = document.createElement('form');
+        let input = document.createElement('input');
+        form.appendChild(input);
+        form.classList.add('form');
+        form.addEventListener('submit', this.onFilmSearch.bind(this));
+
+        let cardList = document.createElement('ul');
+        cardList.classList.add('card-section');
+
+        let forwardButton = document.createElement('button');
+        forwardButton.classList.add('pagination__forward-button');
+        let backwardButton = document.createElement('button');
+        backwardButton.classList.add('pagination__backward-button');
+        let page = document.createElement('div');
+        page.classList.add('pagination__page');
+        let paginationWrapper = document.createElement('div');
+        forwardButton.textContent = 'Вперед';
+        backwardButton.textContent = 'Назад';
+        backwardButton.addEventListener('click', this.onBackwardClick.bind(this));
+        forwardButton.addEventListener('click', this.onForwardClick.bind(this));
+        paginationWrapper.append(backwardButton, page, forwardButton);
+        paginationWrapper.classList.add('hidden');
+
+        this.wrapper.append(title, form);
+        this.cardSection.appendChild(cardList);
     }
 
     renderLibrary(e){
         e.preventDefault();
         this.title.remove();
         this.form.remove();
+        this.state = history;
+        window.history.pushState(null, null, 'library.html');
         if(this.forwardButton) this.forwardButton.remove();
         if(this.backwardButton) this.backwardButton.remove();
         if(this.page) this.page.remove();
         this.cardSection.textContent = '';
         this.cardSection.append(library.createHTML());
+    }
+
+    renderMain(event) {
+        event.preventDefault();
+        this.mainLink.href = `/?redirected=true&page=main&`;
+        history.pushState(null, null, this.mainLink.href);
+        let wrapper = document.querySelector('.button-container');
+        wrapper.remove();
     }
 
     onFilmSearch(event) {
@@ -107,6 +124,8 @@ export default class SearchView extends EventEmitter {
             filmImage.setAttribute('src', Poster);
             link.append(filmTitle, filmImage);
             link.dataset.id = item.imdbID;
+            let movieHref = `/?redirected=true&page=movie&${link.dataset.id}`; 
+            link.setAttribute('href', movieHref);
             link.addEventListener('click', this.showId.bind(this));
             card.appendChild(link);
             this.cardList.appendChild(card);
@@ -115,6 +134,7 @@ export default class SearchView extends EventEmitter {
     }
     showId(event) {
         event.preventDefault();
+        history.pushState(null, null, event.target.parentNode.href);
         if (event.target.parentNode.dataset.id) {
             console.log(event.target.parentNode.dataset.id);
             let id = event.target.parentNode.dataset.id;

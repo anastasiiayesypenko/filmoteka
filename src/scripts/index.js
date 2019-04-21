@@ -13,9 +13,11 @@ const view = new SearchView();
 const controller = new SearchController(model, view);
 
 let hstr = history.state;
+let rarararara = window.history;
 let numberOfEntries = window.history.length;
+console.log('aaaaaa', document.location);
 
-console.log(hstr, numberOfEntries);
+console.log(hstr, numberOfEntries, 'window.history', window.history, rarararara);
 
 
 
