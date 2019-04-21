@@ -160,9 +160,40 @@ export default class SearchView extends EventEmitter {
         form.classList.add('form');
         form.addEventListener('submit', this.onFilmSearch.bind(this));
 
-
+        let forwardButton = document.createElement('button');
+        forwardButton.classList.add('pagination__forward-button');
+        let backwardButton = document.createElement('button');
+        backwardButton.classList.add('pagination__backward-button');
+        let page = document.createElement('div');
+        page.classList.add('pagination__page');
+        let paginationWrapper = document.createElement('div');
+        
+        forwardButton.textContent = 'Вперед';
+        backwardButton.textContent = 'Назад';
+        backwardButton.addEventListener('click', this.onBackwardClick.bind(this));
+        forwardButton.addEventListener('click', this.onForwardClick.bind(this));
+        let cardList = document.createElement('ul');
+        cardList.classList.add('card-section');
+        this.cardSection.append(cardList);
         this.wrapper.append(title, form);
+        paginationWrapper.append(backwardButton, page, forwardButton);
+        
+        this.cardSection.append(paginationWrapper);
+        paginationWrapper.classList.add('hidden', 'pagination-wrapper');
     }
+
+    renderLibrary(e){
+        e.preventDefault();
+        this.title.remove();
+        this.form.remove();
+        this.state = history;
+        window.history.pushState(null, null, 'library.html');
+        if(this.forwardButton) this.forwardButton.remove();
+        if(this.backwardButton) this.backwardButton.remove();
+        if(this.page) this.page.remove();
+        this.cardSection.textContent = '';
+        this.cardSection.append(library.createHTML());
+
   }
   onBackwardClick() {
     this.forwardButton.classList.remove('hidden');
@@ -194,24 +225,12 @@ export default class SearchView extends EventEmitter {
 
     onFilmSearch(event) {
         event.preventDefault();
-        let forwardButton = document.createElement('button');
-        forwardButton.classList.add('pagination__forward-button');
-        let backwardButton = document.createElement('button');
-        backwardButton.classList.add('pagination__backward-button');
-        let page = document.createElement('div');
-        page.classList.add('pagination__page');
-        let paginationWrapper = document.createElement('div');
-        paginationWrapper.classList.add('pagination-wrapper', 'pagination');
-        forwardButton.textContent = 'Вперед';
-        backwardButton.textContent = 'Назад';
-        backwardButton.addEventListener('click', this.onBackwardClick.bind(this));
-        forwardButton.addEventListener('click', this.onForwardClick.bind(this));
-        paginationWrapper.append(backwardButton, page, forwardButton);
-        let cardList = document.createElement('ul');
-        this.cardSection.append(cardList);
-        cardList.classList.add('card-section');
-        this.cardSection.append(paginationWrapper);
-
+        let forwardButton = document.querySelector('.pagination__forward-button');
+        let backwardButton = document.querySelector('.pagination__backward-button');
+        let page = document.querySelector('.pagination__page');
+        let paginationWrapper = document.querySelector('.pagination-wrapper');
+        paginationWrapper.classList.add('pagination');
+        paginationWrapper.classList.remove('hidden');
         let input = document.querySelector('input');
         let { value } = input;
         backwardButton.classList.add('hidden');
