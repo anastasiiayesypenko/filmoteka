@@ -66,12 +66,14 @@ export default class SearchView extends EventEmitter {
 
         this.wrapper.append(title, form);
         this.cardSection.appendChild(cardList);
+
+        let btnLibrary = document.querySelector('.library-link');
+        btnLibrary.addEventListener('click', this.renderLibrary.bind(this));
     }
 
     renderLibrary(e){
         e.preventDefault();
-        this.title.remove();
-        this.form.remove();
+        this.wrapper.remove();
         this.state = history;
         window.history.pushState(null, null, 'library.html');
         if(this.forwardButton) this.forwardButton.remove();

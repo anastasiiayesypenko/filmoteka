@@ -3,6 +3,7 @@
 export default class Library {
   constructor() {
     let createdHTML = this.createHTML();
+    
   }
 
   createHTML() {
@@ -24,17 +25,13 @@ export default class Library {
     linksList.classList.add('button-list');
 
     let queueArr = JSON.parse(localStorage.getItem("qeue") || "[]");
-    let moviesCards = this.renderContent(queueArr);
+    let result = this.renderContent(queueArr);
 
-    moviesCards.classList.add("js-movies-cards");
-    moviesCards.style.display = 'flex'
-    moviesCards.style.flexWrap = 'wrap'
-    moviesCards.style.justifyContent = 'space-between'
+    let moviesCards = document.createElement('div');
+    moviesCards.append(result);
+
     
-
-
-
-
+   
     btnQueue.textContent = "Очередь просмотра";
     btnFavorites.textContent = "Избранные";
     btnHaveSeen.textContent = "Просмотренные";
@@ -56,6 +53,7 @@ export default class Library {
 
   renderContent(arr) {
     let result = document.createElement("div");
+    result.classList.add("js-movies-cards");
     let content = arr.reduce((acc, el) => {
       acc += `
     <div style = "padding:10px">
