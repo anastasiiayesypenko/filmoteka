@@ -86,9 +86,6 @@ export default class SearchView extends EventEmitter {
 
         let btnLibrary = document.querySelector('.library-link');
         btnLibrary.addEventListener('click', this.renderLibrary.bind(this));
-        
-         
-        return 
     }
 
     renderLibrary(e) {
