@@ -11,7 +11,16 @@ export default class FilmView extends EventEmitter {
     this.form.addEventListener('submit', this.onFilmSearch.bind(this));
     this.cardSection = document.createElement('section');
     this.app.append(this.form, this.cardSection);
+    // this.urlCard = [];
   }
+
+  // setUrlToLocalStorage(array) {
+  //   localStorage.setItem('watched', JSON.stringify(array));
+  // }
+  // getUrlFromLocalStorage() {
+  //   let data = localStorage.getItem('watched');
+  //   return data ? JSON.parse(data) : [];
+  // }
 
   isInStorage(type, id) {
     const storage = localStorage.getItem(type);
@@ -21,15 +30,6 @@ export default class FilmView extends EventEmitter {
     }
     return JSON.parse(storage).some(el => el.id === id);
   }
-
-  // setUrlToLocalStorage(array) {
-  //   localStorage.setItem('favourites-links', JSON.stringify(array));
-  // }
-
-  // getUrlFromLocalStorage() {
-  //   let data = localStorage.getItem('favourites-links');
-  //   return data ? JSON.parse(data) : [];
-  // }
 
   changeValueBtnWatchedFilm({ target }, data) {
     const storage = this.isInStorage('watched');
@@ -113,12 +113,12 @@ export default class FilmView extends EventEmitter {
     buttonWatchedFilm.textContent = 'Добавить в просмотренные';
 
     let buttonPlanWatching = document.createElement('button');
-    buttonPlanWatching.dataset.storage = this.isInStorage('watched');
+    buttonPlanWatching.dataset.storage = this.isInStorage('plan');
     buttonPlanWatching.classList.add('movie-card__button');
     buttonPlanWatching.textContent = 'Запланировать просмотр';
 
     let buttonAddFilmInFav = document.createElement('button');
-    buttonAddFilmInFav.dataset.storage = this.isInStorage('watched');
+    buttonAddFilmInFav.dataset.storage = this.isInStorage('add');
     buttonAddFilmInFav.classList.add('movie-card__button');
     buttonAddFilmInFav.textContent = 'Добавить в избранное';
 
