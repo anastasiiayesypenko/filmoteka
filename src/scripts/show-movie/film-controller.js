@@ -7,6 +7,6 @@ export default class FilmController {
   }
 
   onSearch(value) {
-    this.model.fetchFilmByTitle(value).then(data => this.view.drawCard(data));
+    this.model.fetchFilmById(value).then(data => this.view.drawCard(data));
   }
 }
