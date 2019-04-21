@@ -71,8 +71,7 @@ export default class SearchView extends EventEmitter {
 
     renderLibrary(e){
         e.preventDefault();
-        this.title.remove();
-        this.form.remove();
+        this.wrapper.remove();
         this.state = history;
         window.history.pushState(null, null, 'library.html');
         if(this.forwardButton) this.forwardButton.remove();
