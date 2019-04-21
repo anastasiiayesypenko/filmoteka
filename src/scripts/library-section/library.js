@@ -1,8 +1,30 @@
 'use strict';
 
+function searchByID(imdbId){
+  const url = `http://www.omdbapi.com/?i=${imdbId}&apikey=c6c6013b`;
+  return new Promise(resolve => {
+    fetch(url)
+      .then(response => {
+        if (response.ok) return response.json();
+        throw new Error(`Error while fetching: ${response.statusText}`);
+      })
+      .then(data => {
+        console.log(data);
+        resolve(data);
+      })
+      .catch(error => console.log(error));
+  });
+}
+
+
+function drawMovieCard (){
+
+}
+
 export default class Library {
   constructor() {
-    let createdHTML = this.createHTML();
+    this.moviesCards;
+    
   }
 
   createHTML() {
@@ -52,7 +74,7 @@ export default class Library {
     result.classList.add('js-movies-cards');
      let content = arr.reduce((acc, el) => {
       acc += `
-    <div style = "padding:10px">
+    <div class="card" style = "padding:10px" data-id="${el.imdbID}">
         <h3>${el.Title}</h3>
         <img src="${el.Poster}" alt="${el.Title}">
     </div>
@@ -60,12 +82,15 @@ export default class Library {
       return acc;
     }, ``);
     result.innerHTML = content;
+    
     return result;
   }
 
   showQueue(e) {
     const arr = JSON.parse(localStorage.getItem("plan")) || [];
     let result = this.renderContent(arr);
+    this.moviesCards = result;
+    console.log(this.moviesCards);
     let elem = document.querySelector('.js-movies-cards');
     elem.remove();
     let container = document.querySelector('.button-container');
@@ -75,6 +100,8 @@ export default class Library {
   showFavorites(e) {
     const arr = JSON.parse(localStorage.getItem("add")) || [];
     let result = this.renderContent(arr);
+    this.moviesCards = result;
+    console.log(this.moviesCards);
     let elem = document.querySelector('.js-movies-cards');
     elem.remove();
     let container = document.querySelector('.button-container');
@@ -85,6 +112,8 @@ export default class Library {
   showSeen(e) {
     const arr = JSON.parse(localStorage.getItem("watched")) || [];
     let result = this.renderContent(arr);
+    this.moviesCards = result;
+    console.log(this.moviesCards);
     let elem = document.querySelector('.js-movies-cards');
     elem.remove();
     let container = document.querySelector('.button-container');
@@ -100,6 +129,23 @@ export default class Library {
       } else {
         btn.classList.remove('active');
       }
+    });
+  }
+
+  searchByID(e){
+    console.log(e.target);
+    const url = `http://www.omdbapi.com/?i=${imdbId}&apikey=c6c6013b`;
+    return new Promise(resolve => {
+      fetch(url)
+        .then(response => {
+          if (response.ok) return response.json();
+          throw new Error(`Error while fetching: ${response.statusText}`);
+        })
+        .then(data => {
+          console.log(data);
+          resolve(data);
+        })
+        .catch(error => console.log(error));
     });
   }
 }
