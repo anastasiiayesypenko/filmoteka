@@ -69,6 +69,7 @@ export default class SearchView extends EventEmitter {
         paginationWrapper.classList.add('hidden', 'pagination-wrapper');
     }
 
+    
     renderLibrary(e){
         e.preventDefault();
         this.title.remove();
