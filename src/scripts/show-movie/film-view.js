@@ -13,17 +13,17 @@ export default class FilmView extends EventEmitter {
     this.app.append(this.form, this.cardSection);
   }
 
-  isInStorage(type, id) {
+  isInStorage(type, imdbID) {
     const storage = localStorage.getItem(type);
     console.log(storage);
     if (!storage) {
       return false;
     }
-    return JSON.parse(storage).some(el => el.id === id);
+    return JSON.parse(storage).some(el => el.imdbID === imdbID);
   }
 
   changeValueBtnWatchedFilm({ target }, data) {
-    const storage = this.isInStorage('watched');
+    const storage = this.isInStorage('watched', data.imdbID);
     if (storage) {
       console.log(storage);
       const filterArr = JSON.parse(localStorage.getItem('watched')).filter(
@@ -37,6 +37,7 @@ export default class FilmView extends EventEmitter {
         Title: data.Title,
         Poster: data.Poster,
         Ratings: data.Ratings[0].Value,
+        Ratings: data.Ratings,
         imdbID: data.imdbID,
       });
       localStorage.setItem('watched', JSON.stringify(getWatсhed));
@@ -46,7 +47,7 @@ export default class FilmView extends EventEmitter {
   }
 
   changeValueBtnPlanWatching({ target }, data) {
-    const storage = this.isInStorage('plan');
+    const storage = this.isInStorage('plan', data.imdbID);
     if (storage) {
       const filterArr = JSON.parse(localStorage.getItem('plan')).filter(
         el => el.imdbID !== data.imdbID,
@@ -58,7 +59,7 @@ export default class FilmView extends EventEmitter {
       getPlanned.push({
         Title: data.Title,
         Poster: data.Poster,
-        Ratings: data.Ratings[0].Value,
+        Ratings: data.Ratings,
         imdbID: data.imdbID,
       });
       localStorage.setItem('plan', JSON.stringify(getPlanned));
@@ -68,7 +69,7 @@ export default class FilmView extends EventEmitter {
   }
 
   changeValueBtnAddFav({ target }, data) {
-    const storage = this.isInStorage('add');
+    const storage = this.isInStorage('add', data.imdbID);
     if (storage) {
       const filterArr = JSON.parse(localStorage.getItem('add')).filter(
         el => el.imdbID !== data.imdbID,
@@ -80,7 +81,7 @@ export default class FilmView extends EventEmitter {
       getAdded.push({
         Title: data.Title,
         Poster: data.Poster,
-        Ratings: data.Ratings[0].Value,
+        Ratings: data.Ratings,
         imdbID: data.imdbID,
       });
       localStorage.setItem('add', JSON.stringify(getAdded));
@@ -103,12 +104,12 @@ export default class FilmView extends EventEmitter {
     buttonWatchedFilm.textContent = 'Добавить в просмотренные';
 
     let buttonPlanWatching = document.createElement('button');
-    buttonPlanWatching.dataset.storage = this.isInStorage('watched');
+    buttonPlanWatching.dataset.storage = this.isInStorage('plan');
     buttonPlanWatching.classList.add('movie-card__button');
     buttonPlanWatching.textContent = 'Запланировать просмотр';
 
     let buttonAddFilmInFav = document.createElement('button');
-    buttonAddFilmInFav.dataset.storage = this.isInStorage('watched');
+    buttonAddFilmInFav.dataset.storage = this.isInStorage('add');
     buttonAddFilmInFav.classList.add('movie-card__button');
     buttonAddFilmInFav.textContent = 'Добавить в избранное';
 
@@ -152,7 +153,7 @@ export default class FilmView extends EventEmitter {
       data.Awards
     }</span></p>
     <p class="movie-card__pretitle margin">Rating: <span>${
-      data.Ratings[0].Value
+      data.Ratings[0] ? data.Ratings[0].Value : (data.Ratings = 'N/A')
     }</span> <span class="movie-card__votes">${data.imdbVotes} votes</span></p>
     <p class="movie-card__pretitle margin">Actors: <span class="movie-card__description">${
       data.Actors
