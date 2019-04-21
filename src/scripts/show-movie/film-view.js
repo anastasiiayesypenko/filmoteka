@@ -11,28 +11,19 @@ export default class FilmView extends EventEmitter {
     this.form.addEventListener('submit', this.onFilmSearch.bind(this));
     this.cardSection = document.createElement('section');
     this.app.append(this.form, this.cardSection);
-    // this.urlCard = [];
   }
 
-  // setUrlToLocalStorage(array) {
-  //   localStorage.setItem('watched', JSON.stringify(array));
-  // }
-  // getUrlFromLocalStorage() {
-  //   let data = localStorage.getItem('watched');
-  //   return data ? JSON.parse(data) : [];
-  // }
-
-  isInStorage(type, id) {
+  isInStorage(type, imdbID) {
     const storage = localStorage.getItem(type);
     console.log(storage);
     if (!storage) {
       return false;
     }
-    return JSON.parse(storage).some(el => el.id === id);
+    return JSON.parse(storage).some(el => el.imdbID === imdbID);
   }
 
   changeValueBtnWatchedFilm({ target }, data) {
-    const storage = this.isInStorage('watched');
+    const storage = this.isInStorage('watched', data.imdbID);
     if (storage) {
       console.log(storage);
       const filterArr = JSON.parse(localStorage.getItem('watched')).filter(
@@ -45,7 +36,7 @@ export default class FilmView extends EventEmitter {
       getWatсhed.push({
         Title: data.Title,
         Poster: data.Poster,
-        // Ratings: data.Ratings[0].Value,
+        Ratings: data.Ratings[0].Value,
         Ratings: data.Ratings,
         imdbID: data.imdbID,
       });
@@ -56,7 +47,7 @@ export default class FilmView extends EventEmitter {
   }
 
   changeValueBtnPlanWatching({ target }, data) {
-    const storage = this.isInStorage('plan');
+    const storage = this.isInStorage('plan', data.imdbID);
     if (storage) {
       const filterArr = JSON.parse(localStorage.getItem('plan')).filter(
         el => el.imdbID !== data.imdbID,
@@ -78,7 +69,7 @@ export default class FilmView extends EventEmitter {
   }
 
   changeValueBtnAddFav({ target }, data) {
-    const storage = this.isInStorage('add');
+    const storage = this.isInStorage('add', data.imdbID);
     if (storage) {
       const filterArr = JSON.parse(localStorage.getItem('add')).filter(
         el => el.imdbID !== data.imdbID,
