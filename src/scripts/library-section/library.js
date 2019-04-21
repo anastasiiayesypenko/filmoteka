@@ -23,7 +23,7 @@ export default class Library {
     btnHaveSeen.classList.add('button-container__button');
     linksList.classList.add('button-list');
 
-    let queueArr = JSON.parse(localStorage.getItem('qeue') || '[]');
+    let queueArr = JSON.parse(localStorage.getItem('plan') || '[]');
     let moviesCards = this.renderContent(queueArr);
 
 
