@@ -38,6 +38,20 @@ export default class SearchView extends EventEmitter {
 
         this.cardMovie = document.createElement('section');
     }
+    onRendrer(href) {
+        let markUp = document.createElement('div');
+        if (href === '/library.html') {
+            markUp = library.createHTML();
+        } 
+        // else if (href === '/movie.html') {
+        //     markUp = this.drawMovie.bind(this);
+         else if (href === '/') {
+            markUp = this.drawMain.bind(this);
+        }
+        console.log(markUp);
+        this.wrapper.innerHTML = '';
+        this.wrapper.appendChild(markUp);
+    }
     drawMain() {
         let title = document.createElement('h2');
         title.classList.add('h2');
@@ -72,9 +86,12 @@ export default class SearchView extends EventEmitter {
 
         let btnLibrary = document.querySelector('.library-link');
         btnLibrary.addEventListener('click', this.renderLibrary.bind(this));
+        
+         
+        return 
     }
 
-    renderLibrary(e){
+    renderLibrary(e) {
         e.preventDefault();
         this.wrapper.style.display = "none";
         this.state = history;
@@ -91,7 +108,6 @@ export default class SearchView extends EventEmitter {
         this.wrapper.style.display = "block";
         this.mainLink.href = `/`;
         history.pushState(null, null, this.mainLink.href);
-        console.log('hate');
         this.wrapper.innerHTML = '';
         this.cardSection.innerHTML = '';
         this.drawMain.bind(this)();
@@ -160,7 +176,6 @@ export default class SearchView extends EventEmitter {
         event.preventDefault();
         history.pushState(null, null, event.target.parentNode.href);
         if (event.target.parentNode.dataset.id) {
-            console.log(event.target.parentNode.dataset.id);
             let id = event.target.parentNode.dataset.id;
             this.emit('show-movie', id);
         };
@@ -195,7 +210,6 @@ export default class SearchView extends EventEmitter {
     }
     isInStorage(type, imdbID) {
         const storage = localStorage.getItem(type);
-        console.log(storage);
         if (!storage) {
           return false;
         }
@@ -205,7 +219,6 @@ export default class SearchView extends EventEmitter {
       changeValueBtnWatchedFilm({ target }, data) {
         const storage = this.isInStorage('watched', data.imdbID);
         if (storage) {
-          console.log(storage);
           const filterArr = JSON.parse(localStorage.getItem('watched')).filter(
             el => el.imdbID !== data.imdbID,
           );

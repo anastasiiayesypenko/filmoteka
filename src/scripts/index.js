@@ -8,11 +8,14 @@ import FilmModel from './show-movie/film-model';
 import FilmController from './show-movie/film-controller';
 import Library from './library-section/library';
 
-window.addEventListener('popstate', onPopState);
-function onPopState() {
-    
-}
+
+
+
 const model = new SearchModel();
 const view = new SearchView();
 const controller = new SearchController(model, view);
 
+
+window.onpopstate = function(event) {
+    view.onRendrer(document.location.pathname);
+};

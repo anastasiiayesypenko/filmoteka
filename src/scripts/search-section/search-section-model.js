@@ -28,7 +28,6 @@ export default class SearchModel {
           throw new Error(`Error while fetching: ${response.statusText}`);
         })
         .then(data => {
-          console.log(data);
           resolve(data);
         })
         .catch(error => console.log(error));
