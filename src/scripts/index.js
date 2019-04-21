@@ -17,5 +17,5 @@ const controller = new SearchController(model, view);
 
 
 window.onpopstate = function(event) {
-    view.onRendrer(document.location.pathname);
+    view.onRender(document.location.pathname);
 };
