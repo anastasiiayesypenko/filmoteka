@@ -1,8 +1,6 @@
 'use strict';
 export default class FilmModel {
-  constructor() {
-    // this.urlCard = getUrlFromLocalStorage();
-  }
+  constructor() {}
   fetchFilmByTitle(imdbId) {
     const url = `http://www.omdbapi.com/?i=${imdbId}&apikey=c6c6013b`;
     return new Promise(resolve => {
@@ -18,13 +16,4 @@ export default class FilmModel {
         .catch(error => console.log(error));
     });
   }
-
-  // setUrlToLocalStorage(array) {
-  //   localStorage.setItem('watched', JSON.stringify(array));
-  // }
-
-  // getUrlFromLocalStorage() {
-  //   let data = localStorage.getItem('watched');
-  //   return data ? JSON.parse(data) : [];
-  // }
 }

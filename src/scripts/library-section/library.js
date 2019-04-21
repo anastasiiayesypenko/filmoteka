@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 export default class Library {
   constructor() {
@@ -6,29 +6,31 @@ export default class Library {
   }
 
   createHTML() {
-    let container = document.createElement("div");
-    container.classList.add("button-container");
-    container.classList.add("container");
+    let container = document.createElement('div');
+    container.classList.add('button-container');
+    container.classList.add('container');
 
-    let linksList = document.createElement("ul");
-    let itemQueue = document.createElement("li");
-    let itemFavorites = document.createElement("li");
-    let itemHaveSeen = document.createElement("li");
-    let btnQueue = document.createElement("button");
-    let btnFavorites = document.createElement("button");
-    let btnHaveSeen = document.createElement("button");
+    let linksList = document.createElement('ul');
+    let itemQueue = document.createElement('li');
+    let itemFavorites = document.createElement('li');
+    let itemHaveSeen = document.createElement('li');
+    let btnQueue = document.createElement('button');
+    let btnFavorites = document.createElement('button');
+    let btnHaveSeen = document.createElement('button');
 
-    btnQueue.classList.add("button-container__button" , "active");
-    btnFavorites.classList.add("button-container__button");
-    btnHaveSeen.classList.add("button-container__button");
+    btnQueue.classList.add('button-container__button', 'active');
+    btnFavorites.classList.add('button-container__button');
+    btnHaveSeen.classList.add('button-container__button');
     linksList.classList.add('button-list');
 
-    let queueArr = JSON.parse(localStorage.getItem("qeue") || "[]");
+    let queueArr = JSON.parse(localStorage.getItem('qeue') || '[]');
     let moviesCards = this.renderContent(queueArr);
 
-    btnQueue.textContent = "Очередь просмотра";
-    btnFavorites.textContent = "Избранные";
-    btnHaveSeen.textContent = "Просмотренные";
+
+    btnQueue.textContent = 'Очередь просмотра';
+    btnFavorites.textContent = 'Избранные';
+    btnHaveSeen.textContent = 'Просмотренные';
+
 
     container.append(linksList);
     itemQueue.append(btnQueue);
@@ -37,10 +39,10 @@ export default class Library {
     linksList.append(itemQueue, itemFavorites, itemHaveSeen);
     container.append(moviesCards);
 
-    btnQueue.addEventListener("click", this.showQueue.bind(this));
-    btnFavorites.addEventListener("click", this.showFavorites.bind(this));
-    btnHaveSeen.addEventListener("click", this.showSeen.bind(this));
-    linksList.addEventListener("click", this.chooseActive.bind(this));
+    btnQueue.addEventListener('click', this.showQueue.bind(this));
+    btnFavorites.addEventListener('click', this.showFavorites.bind(this));
+    btnHaveSeen.addEventListener('click', this.showSeen.bind(this));
+    linksList.addEventListener('click', this.chooseActive.bind(this));
 
     return container;
   }
@@ -48,7 +50,7 @@ export default class Library {
   renderContent(arr) {
     let result = document.createElement("div");
     result.classList.add('js-movies-cards');
-    let content = arr.reduce((acc, el) => {
+     let content = arr.reduce((acc, el) => {
       acc += `
     <div style = "padding:10px">
         <h3>${el.Title}</h3>
@@ -76,6 +78,7 @@ export default class Library {
     let elem = document.querySelector('.js-movies-cards');
     elem.remove();
     let container = document.querySelector('.button-container');
+
     container.append(result);
   }
 
@@ -85,16 +88,17 @@ export default class Library {
     let elem = document.querySelector('.js-movies-cards');
     elem.remove();
     let container = document.querySelector('.button-container');
+
     container.append(result);
   }
 
   chooseActive(e) {
-    let btns = document.querySelectorAll(".button-container__button");
+    let btns = document.querySelectorAll('.button-container__button');
     [...btns].forEach(btn => {
       if (e.target === btn) {
-        btn.classList.add("active");
+        btn.classList.add('active');
       } else {
-        btn.classList.remove("active");
+        btn.classList.remove('active');
       }
     });
   }
