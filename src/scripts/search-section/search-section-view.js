@@ -86,8 +86,10 @@ export default class SearchView extends EventEmitter {
         event.preventDefault();
         this.mainLink.href = `/?redirected=true&page=main&`;
         history.pushState(null, null, this.mainLink.href);
-        let wrapper = document.querySelector('.button-container');
-        wrapper.remove();
+        console.log('hate');
+        this.wrapper.innerHTML = '';
+        this.cardSection.innerHTML = '';
+        this.drawMain.bind(this)();
     }
 
     onFilmSearch(event) {
@@ -96,8 +98,8 @@ export default class SearchView extends EventEmitter {
         let backwardButton = document.querySelector('.pagination__backward-button');
         let page = document.querySelector('.pagination__page');
         let paginationWrapper = document.querySelector('.pagination-wrapper');
-        paginationWrapper.classList.add('pagination');
-        paginationWrapper.classList.remove('hidden');
+        
+        
         let input = document.querySelector('input');
         let { value } = input;
         backwardButton.classList.add('hidden');
@@ -111,6 +113,12 @@ export default class SearchView extends EventEmitter {
     }  
     drawCard(data) {
         let filmList = data.Search;
+        let paginationWrapper = document.querySelector('.pagination-wrapper');
+        paginationWrapper.classList.add('pagination');
+        if (typeof filmList === 'undefined') {
+            paginationWrapper.classList.remove('pagination');
+            paginationWrapper.classList.add('hidden');
+        }  
         let amountOfPages = Math.ceil(data.totalResults / 10);
         let forwardButton = document.querySelector('.pagination__forward-button');
         let page = document.querySelector('.pagination__page');
@@ -140,8 +148,8 @@ export default class SearchView extends EventEmitter {
             card.appendChild(link);
             cardList.appendChild(card);
         });
-        let paginationWrapper = document.querySelector('pagination-wrapper');
-        paginationWrapper.classList.add('pagination');
+        
+      
     }
     showId(event) {
         event.preventDefault();
