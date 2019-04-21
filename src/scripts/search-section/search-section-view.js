@@ -67,12 +67,14 @@ export default class SearchView extends EventEmitter {
         
         this.cardSection.append(paginationWrapper);
         paginationWrapper.classList.add('hidden', 'pagination-wrapper');
+
+        let btnLibrary = document.querySelector('.library-link');
+        btnLibrary.addEventListener('click', this.renderLibrary.bind(this));
     }
 
     renderLibrary(e){
         e.preventDefault();
-        this.title.remove();
-        this.form.remove();
+        this.wrapper.style.display = "none";
         this.state = history;
         window.history.pushState(null, null, 'library.html');
         if(this.forwardButton) this.forwardButton.remove();
@@ -84,6 +86,7 @@ export default class SearchView extends EventEmitter {
 
     renderMain(event) {
         event.preventDefault();
+        this.wrapper.style.display = "block";
         this.mainLink.href = `/?redirected=true&page=main&`;
         history.pushState(null, null, this.mainLink.href);
         console.log('hate');

@@ -27,9 +27,9 @@ export default class Library {
     let moviesCards = this.renderContent(queueArr);
 
     moviesCards.classList.add("js-movies-cards");
-    moviesCards.style.display = 'flex'
-    moviesCards.style.flexWrap = 'wrap'
-    moviesCards.style.justifyContent = 'space-between'
+    moviesCards.style.display = 'flex';
+    moviesCards.style.flexWrap = 'wrap';
+    moviesCards.style.justifyContent = 'space-between';
     
 
 
