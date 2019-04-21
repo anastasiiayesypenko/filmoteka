@@ -26,9 +26,11 @@ export default class Library {
     let queueArr = JSON.parse(localStorage.getItem('qeue') || '[]');
     let moviesCards = this.renderContent(queueArr);
 
+
     btnQueue.textContent = 'Очередь просмотра';
     btnFavorites.textContent = 'Избранные';
     btnHaveSeen.textContent = 'Просмотренные';
+
 
     container.append(linksList);
     itemQueue.append(btnQueue);
@@ -46,8 +48,9 @@ export default class Library {
   }
 
   renderContent(arr) {
-    let result = document.createElement('div');
-    let content = arr.reduce((acc, el) => {
+    let result = document.createElement("div");
+    result.classList.add('js-movies-cards');
+     let content = arr.reduce((acc, el) => {
       acc += `
     <div style = "padding:10px">
         <h3>${el.Title}</h3>
@@ -61,26 +64,31 @@ export default class Library {
   }
 
   showQueue(e) {
-    const arr = JSON.parse(localStorage.getItem('qeue')) || [];
+    const arr = JSON.parse(localStorage.getItem("plan")) || [];
     let result = this.renderContent(arr);
-    let container = document.querySelector('.js-movies-cards');
-    container.textContent = '';
+    let elem = document.querySelector('.js-movies-cards');
+    elem.remove();
+    let container = document.querySelector('.button-container');
     container.append(result);
   }
 
   showFavorites(e) {
-    const arr = JSON.parse(localStorage.getItem('favorites')) || [];
+    const arr = JSON.parse(localStorage.getItem("add")) || [];
     let result = this.renderContent(arr);
-    let container = document.querySelector('.js-movies-cards');
-    container.textContent = '';
+    let elem = document.querySelector('.js-movies-cards');
+    elem.remove();
+    let container = document.querySelector('.button-container');
+
     container.append(result);
   }
 
   showSeen(e) {
-    const arr = JSON.parse(localStorage.getItem('haveseen')) || [];
+    const arr = JSON.parse(localStorage.getItem("watched")) || [];
     let result = this.renderContent(arr);
-    let container = document.querySelector('.js-movies-cards');
-    container.textContent = '';
+    let elem = document.querySelector('.js-movies-cards');
+    elem.remove();
+    let container = document.querySelector('.button-container');
+
     container.append(result);
   }
 
