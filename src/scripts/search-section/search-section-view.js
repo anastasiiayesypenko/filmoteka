@@ -89,7 +89,7 @@ export default class SearchView extends EventEmitter {
     renderMain(event) {
         event.preventDefault();
         this.wrapper.style.display = "block";
-        this.mainLink.href = `/?redirected=true&page=main&`;
+        this.mainLink.href = `/`;
         history.pushState(null, null, this.mainLink.href);
         console.log('hate');
         this.wrapper.innerHTML = '';
@@ -147,7 +147,7 @@ export default class SearchView extends EventEmitter {
             filmImage.setAttribute('src', Poster);
             link.append(filmTitle, filmImage);
             link.dataset.id = item.imdbID;
-            let movieHref = `/?redirected=true&page=movie&${link.dataset.id}`; 
+            let movieHref = `/movie.html?imdbID=${link.dataset.id}`; 
             link.setAttribute('href', movieHref);
             link.addEventListener('click', this.showId.bind(this));
             card.appendChild(link);
