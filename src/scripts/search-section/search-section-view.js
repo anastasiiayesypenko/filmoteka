@@ -47,7 +47,8 @@ export default class SearchView extends EventEmitter {
         let input = document.createElement('input');
         form.appendChild(input);
         form.classList.add('form');
-        form.addEventListener('submit', this.onFilmSearch.bind(this));
+        // form.addEventListener('submit', this.onFilmSearch.bind(this));
+        input.addEventListener('input', this.onFilmSearch.bind(this));
 
         let forwardButton = document.createElement('button');
         forwardButton.classList.add('pagination__forward-button');
