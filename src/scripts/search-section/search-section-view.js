@@ -23,7 +23,7 @@ export default class SearchView extends EventEmitter {
     this.wrapper = document.createElement('div');
     this.cardSection = document.createElement('section');
     this.header.append(this.logo, this.navigation);
-    this.app.appendChild(this.header);
+    this.app.appendChild(this.header, this.cardMovie);
     this.drawMain.bind(this)();
 
     this.footer = document.createElement('footer');
@@ -34,10 +34,8 @@ export default class SearchView extends EventEmitter {
     this.libraryLink = document.querySelector('.library-link');
     this.libraryLink.addEventListener('click', this.renderLibrary.bind(this));
     this.mainLink.addEventListener('click', this.renderMain.bind(this));
-    this.cardSection = document.createElement('section');
-    this.app.append(this.cardSection);
 
-    // this.card = this.dataMovie;
+    this.cardMovie = document.createElement('section');
   }
   drawMain() {
     let title = document.createElement('h2');
@@ -145,6 +143,7 @@ export default class SearchView extends EventEmitter {
   }
   showId(event) {
     event.preventDefault();
+    this.renderMovie.bind(this);
     history.pushState(null, null, event.target.parentNode.href);
     if (event.target.parentNode.dataset.id) {
       console.log(event.target.parentNode.dataset.id);
@@ -298,7 +297,7 @@ export default class SearchView extends EventEmitter {
   }
 
   renderCard(data) {
-    this.cardSection.innerHTML = '';
+    this.cardMovie.innerHTML = '';
 
     this.card = document.createElement('div');
     this.card.classList.add('movie-card');
@@ -335,27 +334,24 @@ export default class SearchView extends EventEmitter {
     filmInfo.classList.add('movie-card__info');
 
     filmInfo.append(filmArticle, this.renderButtons(data));
+    this.wrapper.innerHTML = '';
+    this.cardSection.innerHTML = '';
 
     this.card.append(filmImage, filmInfo);
-    this.cardSection.appendChild(this.card);
+    // this.cardMovie.appendChild(this.card);
+    this.wrapper.appendChild(this.card);
   }
 
   drawMovie(data = this.data) {
     this.data = data;
     const card = this.renderCard(data);
+    return card;
   }
 
   // ===================================================
-  // renderMovie(e) {
-  //   e.preventDefault();
-  //   this.wrapper.remove();
-  //   this.cardSection.remove();
-  //   this.state = history;
-  //   window.history.pushState(null, null, 'movie.html');
-  //   if (this.forwardButton) this.forwardButton.remove();
-  //   if (this.backwardButton) this.backwardButton.remove();
-  //   if (this.page) this.page.remove();
-  //   this.cardSection.textContent = '';
-  //   this.cardSection.append(this.drawMovie());
-  // }
+  renderMovie(e) {
+    e.preventDefault();
+    this.state = history;
+    window.history.pushState(null, null, 'movie.html');
+  }
 }
