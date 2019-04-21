@@ -7,6 +7,7 @@ export default class Library {
 
   createHTML() {
     let container = document.createElement("div");
+    container.classList.add("button-container");
     container.classList.add("container");
 
     let linksList = document.createElement("ul");
@@ -17,15 +18,22 @@ export default class Library {
     let btnFavorites = document.createElement("button");
     let btnHaveSeen = document.createElement("button");
 
-    btnQueue.classList.add("js-queue");
-    btnFavorites.classList.add("js-favorites");
-    btnHaveSeen.classList.add("js-seen");
+    btnQueue.classList.add("button-container__button" , "active");
+    btnFavorites.classList.add("button-container__button");
+    btnHaveSeen.classList.add("button-container__button");
+    linksList.classList.add('button-list');
 
     let queueArr = JSON.parse(localStorage.getItem("qeue") || "[]");
     let moviesCards = this.renderContent(queueArr);
 
     moviesCards.classList.add("js-movies-cards");
-   
+    moviesCards.style.display = 'flex'
+    moviesCards.style.flexWrap = 'wrap'
+    moviesCards.style.justifyContent = 'space-between'
+    
+
+
+
 
     btnQueue.textContent = "Очередь просмотра";
     btnFavorites.textContent = "Избранные";
@@ -41,6 +49,7 @@ export default class Library {
     btnQueue.addEventListener("click", this.showQueue.bind(this));
     btnFavorites.addEventListener("click", this.showFavorites.bind(this));
     btnHaveSeen.addEventListener("click", this.showSeen.bind(this));
+    linksList.addEventListener("click", this.chooseActive.bind(this));
 
     return container;
   }
@@ -49,7 +58,7 @@ export default class Library {
     let result = document.createElement("div");
     let content = arr.reduce((acc, el) => {
       acc += `
-    <div>
+    <div style = "padding:10px">
         <h3>${el.Title}</h3>
         <img src="${el.Poster}" alt="${el.Title}">
     </div>
@@ -63,28 +72,35 @@ export default class Library {
   showQueue(e) {
     const arr = JSON.parse(localStorage.getItem("qeue")) || [];
     let result = this.renderContent(arr);
-    console.log(result);
-    let container = document.querySelector('.js-movies-cards');
-    container.textContent = '';
+    let container = document.querySelector(".js-movies-cards");
+    container.textContent = "";
     container.append(result);
   }
 
   showFavorites(e) {
     const arr = JSON.parse(localStorage.getItem("favorites")) || [];
     let result = this.renderContent(arr);
-    console.log(result);
-    let container = document.querySelector('.js-movies-cards');
-    container.textContent = '';
+    let container = document.querySelector(".js-movies-cards");
+    container.textContent = "";
     container.append(result);
   }
 
   showSeen(e) {
     const arr = JSON.parse(localStorage.getItem("haveseen")) || [];
     let result = this.renderContent(arr);
-    console.log(result);
-    let container = document.querySelector('.js-movies-cards');
-    container.textContent = '';
+    let container = document.querySelector(".js-movies-cards");
+    container.textContent = "";
     container.append(result);
+  }
 
+  chooseActive(e) {
+    let btns = document.querySelectorAll(".button-container__button");
+    [...btns].forEach(btn => {
+      if (e.target === btn) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
   }
 }

@@ -33,7 +33,9 @@ export default class SearchView extends EventEmitter {
         this.form.addEventListener('submit', this.onFilmSearch.bind(this));
 
         this.cardSection = document.createElement('section');
-        this.cardSection.classList.add('card-section');
+        this.cardList = document.createElement('ul');
+        this.cardList.classList.add('card-section');
+        this.cardSection.appendChild(this.cardList);
 
         this.forwardButton = document.createElement('button');
         this.forwardButton.classList.add('pagination__forward-button');
@@ -84,13 +86,17 @@ export default class SearchView extends EventEmitter {
     }  
     drawCard(data) {
         let filmList = data.Search;
+        console.log(filmList);
         let amountOfPages = Math.ceil(data.totalResults / 10);
         if (this.page.textContent >= amountOfPages) {
             this.forwardButton.classList.add('hidden');
         }
-        this.cardSection.innerHTML = '';
+        this.cardList.innerHTML = '';
         let markup = filmList.map(item => {
-            let card = document.createElement('div');
+            let card = document.createElement('li');
+            let link = document.createElement('a');
+            link.classList.add('card-link');
+            card.classList.add('card');
             let filmTitle = document.createElement('p');
             let filmImage = document.createElement('img');
             filmTitle.textContent = item.Title;
@@ -99,10 +105,21 @@ export default class SearchView extends EventEmitter {
                 Poster = src.default;
             }
             filmImage.setAttribute('src', Poster);
-            card.append(filmTitle, filmImage);
-            this.cardSection.appendChild(card);
+            link.append(filmTitle, filmImage);
+            link.dataset.id = item.imdbID;
+            link.addEventListener('click', this.showId.bind(this));
+            card.appendChild(link);
+            this.cardList.appendChild(card);
         });
         this.paginationWrapper.classList.add('pagination');
+    }
+    showId(event) {
+        event.preventDefault();
+        if (event.target.parentNode.dataset.id) {
+            console.log(event.target.parentNode.dataset.id);
+            let id = event.target.parentNode.dataset.id;
+            this.emit('show-movie', id);
+        };
     }
     onBackwardClick() {
         this.forwardButton.classList.remove('hidden');

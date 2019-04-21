@@ -28,10 +28,12 @@ body
     margin: 55px auto
     display: block
     border: 2px solid $accent
-    transition-property: width
+    transition-property: width height
     transition-duration: 3s
 
- 
+section 
+    height: 800%    
+
 .card-section
     display: flex
     flex-wrap: wrap
@@ -43,7 +45,7 @@ body
     margin-bottom: 70px
     
 
-    div 
+    .card
         width: 250px
         text-align: center
         margin: 10px
@@ -56,6 +58,13 @@ body
         img
             width: 150px
             height: 180px
+
+.card-link
+    display: block
+    margin: 0
+    width: 250px
+    height: 200px
+
 
 .hidden
     display: none
@@ -82,6 +91,11 @@ body
         
 
 
+    .js-movies-cards
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-around
+    padding: 10px 10px 10px 10px
 
 .footer 
     @include footer
