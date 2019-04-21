@@ -8,7 +8,9 @@ export default class SearchController {
     this.view.on('show-movie', this.onShow.bind(this));
   }
 
-  onShow(value) {}
+  onShow(value) {
+    this.model.fetchFilmById(value).then(data => this.view.drawMovie(data));
+  }
 
   onSearch(value, page) {
     this.model
