@@ -140,6 +140,7 @@ export default class SearchView extends EventEmitter {
     });
     this.paginationWrapper.classList.add('pagination');
   }
+  
   showId(event) {
     event.preventDefault();
     history.pushState(null, null, event.target.parentNode.href);
@@ -147,6 +148,20 @@ export default class SearchView extends EventEmitter {
       console.log(event.target.parentNode.dataset.id);
       let id = event.target.parentNode.dataset.id;
       this.emit('show-movie', id);
+      
+    drawMain() {
+        let title = document.createElement('h2');
+        title.classList.add('h2');
+        title.textContent = 'Персональная фильмотека';
+
+        let form = document.createElement('form');
+        let input = document.createElement('input');
+        form.appendChild(input);
+        form.classList.add('form');
+        form.addEventListener('submit', this.onFilmSearch.bind(this));
+
+
+        this.wrapper.append(title, form);
     }
   }
   onBackwardClick() {
@@ -176,6 +191,72 @@ export default class SearchView extends EventEmitter {
     console.log(storage);
     if (!storage) {
       return false;
+
+    onFilmSearch(event) {
+        event.preventDefault();
+        let forwardButton = document.createElement('button');
+        forwardButton.classList.add('pagination__forward-button');
+        let backwardButton = document.createElement('button');
+        backwardButton.classList.add('pagination__backward-button');
+        let page = document.createElement('div');
+        page.classList.add('pagination__page');
+        let paginationWrapper = document.createElement('div');
+        paginationWrapper.classList.add('pagination-wrapper', 'pagination');
+        forwardButton.textContent = 'Вперед';
+        backwardButton.textContent = 'Назад';
+        backwardButton.addEventListener('click', this.onBackwardClick.bind(this));
+        forwardButton.addEventListener('click', this.onForwardClick.bind(this));
+        paginationWrapper.append(backwardButton, page, forwardButton);
+        let cardList = document.createElement('ul');
+        this.cardSection.append(cardList);
+        cardList.classList.add('card-section');
+        this.cardSection.append(paginationWrapper);
+
+        let input = document.querySelector('input');
+        let { value } = input;
+        backwardButton.classList.add('hidden');
+        forwardButton.classList.remove('hidden');
+        page.textContent = '1';
+        let pageNumber = page.textContent;
+        this.emit('search', value, pageNumber);
+        input.style.width = '400px';
+
+
+    }
+      
+    drawCard(data) {
+        let filmList = data.Search;
+        let amountOfPages = Math.ceil(data.totalResults / 10);
+        let forwardButton = document.querySelector('.pagination__forward-button');
+        let page = document.querySelector('.pagination__page');
+        if (page.textContent >= amountOfPages) {
+            forwardButton.classList.add('hidden');
+        }
+        let cardList = document.querySelector('.card-section');
+        cardList.innerHTML = '';
+        let markup = filmList.map(item => {
+            let card = document.createElement('li');
+            let link = document.createElement('a');
+            link.classList.add('card-link');
+            card.classList.add('card');
+            let filmTitle = document.createElement('p');
+            let filmImage = document.createElement('img');
+            filmTitle.textContent = item.Title;
+            let { Poster } = item;
+            if ( Poster === 'N/A') {
+                Poster = src.default;
+            }
+            filmImage.setAttribute('src', Poster);
+            link.append(filmTitle, filmImage);
+            link.dataset.id = item.imdbID;
+            let movieHref = `/?redirected=true&page=movie&${link.dataset.id}`; 
+            link.setAttribute('href', movieHref);
+            link.addEventListener('click', this.showId.bind(this));
+            card.appendChild(link);
+            cardList.appendChild(card);
+        });
+        let paginationWrapper = document.querySelector('pagination-wrapper');
+        paginationWrapper.classList.add('pagination');
     }
     return JSON.parse(storage).some(el => el.imdbID === imdbID);
   }
@@ -244,6 +325,34 @@ export default class SearchView extends EventEmitter {
       });
       localStorage.setItem('add', JSON.stringify(getAdded));
       target.textContent = 'Убрать из избранных';
+      
+    onBackwardClick() {
+        let forwardButton = document.querySelector('.pagination__forward-button');
+        let backwardButton = document.querySelector('.pagination__backward-button');
+
+        let page = document.querySelector('.pagination__page');
+        forwardButton.classList.remove('hidden');
+        let input = document.querySelector('input');
+        if (page.textContent >= 2) {
+            let pageNumber = Number(page.textContent) - 1;
+            page.textContent = pageNumber;
+            let { value } = input;
+            this.emit('move', value, pageNumber);
+        } 
+        if (page.textContent === '1') {
+            backwardButton.classList.add('hidden');
+        }
+    }
+    onForwardClick() {
+        let backwardButton = document.querySelector('.pagination__backward-button');
+        let page = document.querySelector('.pagination__page');
+        let input = document.querySelector('input');
+
+        backwardButton.classList.remove('hidden');
+        let pageNumber = Number(page.textContent) + 1;
+        page.textContent = pageNumber;
+        let { value } = input;
+        this.emit('move', value, pageNumber);
     }
     target.dataset.storage = !storage;
   }
