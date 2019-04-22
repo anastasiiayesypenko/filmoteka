@@ -51,6 +51,7 @@ export default class SearchView extends EventEmitter {
     let input = document.createElement('input');
     form.appendChild(input);
     form.classList.add('form');
+    form.addEventListener('submit', this.onFilmSearch.bind(this));
     input.addEventListener('input', this.onFilmSearch.bind(this));
 
     let forwardButton = document.createElement('button');
@@ -73,9 +74,10 @@ export default class SearchView extends EventEmitter {
 
     this.cardSection.append(paginationWrapper);
     paginationWrapper.classList.add('hidden', 'pagination-wrapper');
-
-    let btnLibrary = document.querySelector('.library-link');
-    btnLibrary.addEventListener('click', this.renderLibrary.bind(this));
+    this.wrapper.style.display = "block";
+    this.cardSection.style.display = "none";
+    this.cardSection.style.display = "block";
+    return this.wrapper;
   }
 
   renderLibrary(e) {
@@ -93,9 +95,8 @@ export default class SearchView extends EventEmitter {
   renderMain(event) {
     event.preventDefault();
     this.wrapper.style.display = "block";
-    this.mainLink.href = `/?redirected=true&page=main&`;
+    this.mainLink.href = `/`;
     history.pushState(null, null, this.mainLink.href);
-    console.log('hate');
     this.wrapper.innerHTML = '';
     this.cardSection.innerHTML = '';
     this.drawMain.bind(this)();
@@ -151,7 +152,7 @@ export default class SearchView extends EventEmitter {
       filmImage.setAttribute('src', Poster);
       link.append(filmTitle, filmImage);
       link.dataset.id = item.imdbID;
-      let movieHref = `/?redirected=true&page=movie&${link.dataset.id}`;
+      let movieHref = `/movie.html?imdbID=${link.dataset.id}`;
       link.setAttribute('href', movieHref);
       link.addEventListener('click', this.showId.bind(this));
       card.appendChild(link);
@@ -164,7 +165,6 @@ export default class SearchView extends EventEmitter {
     event.preventDefault();
     history.pushState(null, null, event.target.parentNode.href);
     if (event.target.parentNode.dataset.id) {
-      console.log(event.target.parentNode.dataset.id);
       let id = event.target.parentNode.dataset.id;
       this.emit('show-movie', id);
     };
@@ -199,7 +199,6 @@ export default class SearchView extends EventEmitter {
   }
   isInStorage(type, imdbID) {
     const storage = localStorage.getItem(type);
-    console.log(storage);
     if (!storage) {
       return false;
     }
@@ -209,7 +208,6 @@ export default class SearchView extends EventEmitter {
   changeValueBtnWatchedFilm({ target }, data) {
     const storage = this.isInStorage('watched', data.imdbID);
     if (storage) {
-      console.log(storage);
       const filterArr = JSON.parse(localStorage.getItem('watched')).filter(
         el => el.imdbID !== data.imdbID,
       );
@@ -364,22 +362,37 @@ export default class SearchView extends EventEmitter {
   }
   renderMovie(e) {
     e.preventDefault();
-    this.state = history;
     window.history.pushState(null, null, 'movie.html');
   }
   onRender(href) {
-    let markUp = document.createElement('div');
-    if (href === '/library.html') {
-        markUp = library.createHTML();
-    } 
-    // else if (href === '/movie.html') {
-    //     markUp = this.drawMovie.bind(this);
-    else if (href === '/') {
-        markUp = this.drawMain.bind(this);
-    }
-    console.log(markUp);
+    let markUp;
     this.wrapper.innerHTML = '';
-    this.wrapper.appendChild(markUp);
+    this.cardSection.innerHTML = '';
+    let container = document.querySelector('.container');
+    
+    if (href === '/library.html') {
+      if (container) {
+        container.remove();
+      }
+      markUp = library.createHTML();
+      this.cardSection.appendChild(markUp);
+    } 
+    else if (href === '/movie.html') {
+      markUp = this.drawMovie.bind(this);
+      container.remove();
+
+    }
+    else if (href === '/' || href === '') {
+      this.drawMain()();
+      container.remove();
+      return;
+    } else {
+      markUp = document.createElement('div');
+      container.remove();
+    }
+    console.log('mp', markUp);
+    console.log('href', href);
+
 }
 
 }
