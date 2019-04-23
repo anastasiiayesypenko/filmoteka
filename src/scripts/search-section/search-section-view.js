@@ -83,7 +83,7 @@ export default class SearchView extends EventEmitter {
   renderLibrary(e) {
     e.preventDefault();
     this.wrapper.style.display = "none";
-    this.state = history;
+
     window.history.pushState(null, null, 'library.html');
     if (this.forwardButton) this.forwardButton.remove();
     if (this.backwardButton) this.backwardButton.remove();
@@ -104,14 +104,19 @@ export default class SearchView extends EventEmitter {
 
   onFilmSearch(event) {
     event.preventDefault();
+    
     let forwardButton = document.querySelector('.pagination__forward-button');
     let backwardButton = document.querySelector('.pagination__backward-button');
     let page = document.querySelector('.pagination__page');
     let paginationWrapper = document.querySelector('.pagination-wrapper');
-
-
     let input = document.querySelector('input');
     let { value } = input;
+    // if (String(event.type) === 'submit') {
+    //   history.pushState(null, null, `/?input=${value}`);
+    // }
+    
+    
+    history.pushState(null, null, `/?input=${value}`);
     backwardButton.classList.add('hidden');
     forwardButton.classList.remove('hidden');
     page.textContent = '1';
@@ -389,6 +394,7 @@ export default class SearchView extends EventEmitter {
     this.wrapper.innerHTML = '';
     this.cardSection.innerHTML = '';
     let container = document.querySelector('.container');
+    let inputPattern = /input/;
     
     if (href === '/library.html') {
       if (container) {
@@ -401,12 +407,34 @@ export default class SearchView extends EventEmitter {
       if (container) {
         container.remove();
       }
-    } else if (href === '/' || href === '') {
+    } else if (href === '/' && !(document.URL.match(/\?input=./i))) {
       this.drawMain();
       if (container) {
         container.remove();
       }
       return;
+    } else if (document.URL.match(/\?input=./i)) {
+      document.URL.match(/=[A-Za-z\.\!\+\\=\d\s]+$/);
+      let value = document.URL.match(/=[A-Za-z\.\!\+\\=\d\s\&\%\$\#\@\?\,]+$/)[0].slice(1).replace(/\%20/gi, ' ');
+
+      if (value) {
+        this.drawMain();
+        let forwardButton = document.querySelector('.pagination__forward-button');
+        let backwardButton = document.querySelector('.pagination__backward-button');
+        let page = document.querySelector('.pagination__page');
+        let paginationWrapper = document.querySelector('.pagination-wrapper');
+        let input = document.querySelector('input');
+        input.value = value;
+        backwardButton.classList.add('hidden');
+        forwardButton.classList.remove('hidden');
+        page.textContent = '1';
+        let pageNumber = page.textContent;
+        this.emit('search', value, pageNumber);
+        if (container) {
+          container.remove();
+        }
+      }
+      
     } else {
       console.log('strange href', href);
     }
