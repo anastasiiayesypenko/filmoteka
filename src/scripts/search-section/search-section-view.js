@@ -1,6 +1,6 @@
 'use strict';
-import EventEmitter from "./services/eventemitter";
-import Library from "../library-section/library";
+import EventEmitter from './services/eventemitter';
+import Library from '../library-section/library';
 let library = new Library();
 import * as src from './image/no-image.jpg';
 export default class SearchView extends EventEmitter {
@@ -12,8 +12,7 @@ export default class SearchView extends EventEmitter {
     this.logo = document.createElement('h1');
     this.logo.textContent = 'FILM📀TEKA';
     this.navigation = document.createElement('nav');
-    this.navigation.innerHTML =
-      `<ul class="header-list">
+    this.navigation.innerHTML = `<ul class="header-list">
             <li class="header-list__item">
                 <a href="" class="header-list__itemlink main-link">Главная страница</a>
             </li>
@@ -80,7 +79,7 @@ export default class SearchView extends EventEmitter {
 
   renderLibrary(e) {
     e.preventDefault();
-    this.wrapper.style.display = "none";
+    this.wrapper.style.display = 'none';
     this.state = history;
     window.history.pushState(null, null, 'library.html');
     if (this.forwardButton) this.forwardButton.remove();
@@ -92,7 +91,7 @@ export default class SearchView extends EventEmitter {
 
   renderMain(event) {
     event.preventDefault();
-    this.wrapper.style.display = "block";
+    this.wrapper.style.display = 'block';
     this.mainLink.href = `/?redirected=true&page=main&`;
     history.pushState(null, null, this.mainLink.href);
     console.log('hate');
@@ -108,7 +107,6 @@ export default class SearchView extends EventEmitter {
     let page = document.querySelector('.pagination__page');
     let paginationWrapper = document.querySelector('.pagination-wrapper');
 
-
     let input = document.querySelector('input');
     let { value } = input;
     backwardButton.classList.add('hidden');
@@ -117,8 +115,6 @@ export default class SearchView extends EventEmitter {
     let pageNumber = page.textContent;
     this.emit('search', value, pageNumber);
     input.style.width = '400px';
-
-
   }
   drawCard(data) {
     let filmList = data.Search;
@@ -157,8 +153,6 @@ export default class SearchView extends EventEmitter {
       card.appendChild(link);
       cardList.appendChild(card);
     });
-
-
   }
   showId(event) {
     event.preventDefault();
@@ -167,7 +161,7 @@ export default class SearchView extends EventEmitter {
       console.log(event.target.parentNode.dataset.id);
       let id = event.target.parentNode.dataset.id;
       this.emit('show-movie', id);
-    };
+    }
   }
   onBackwardClick() {
     let forwardButton = document.querySelector('.pagination__forward-button');
@@ -197,6 +191,7 @@ export default class SearchView extends EventEmitter {
     let { value } = input;
     this.emit('move', value, pageNumber);
   }
+
   isInStorage(type, imdbID) {
     const storage = localStorage.getItem(type);
     console.log(storage);
@@ -225,7 +220,7 @@ export default class SearchView extends EventEmitter {
         imdbID: data.imdbID,
       });
       localStorage.setItem('watched', JSON.stringify(getWatсhed));
-      target.textContent = 'Удалить из просмотренных';
+      target.textContent = 'Убрать из просмотренных';
     }
     target.dataset.storage = !storage;
   }
@@ -275,10 +270,30 @@ export default class SearchView extends EventEmitter {
   }
 
   renderButtons(data) {
+    const storage = this.isInStorage('watched', data.imdbID);
+    console.log(storage);
+    console.log(JSON.parse(localStorage.getItem('watched')));
+    console.log(data);
+
     let buttonWatchedFilm = document.createElement('button');
     buttonWatchedFilm.dataset.storage = this.isInStorage('watched');
     buttonWatchedFilm.classList.add('movie-card__button');
     buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+    // if (
+    //   JSON.parse(localStorage.getItem('watched')).filter(
+    //     el => el.imdbID !== data.imdbID,
+    //   )
+    // ) {
+    //   buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+    // } else {
+    //   buttonWatchedFilm.textContent = 'Удалить из просмотренных';
+    // }
+    if (storage) {
+      console.log(storage);
+      buttonWatchedFilm.textContent = 'Убрать из просмотренных';
+    } else {
+      buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+    }
 
     let buttonPlanWatching = document.createElement('button');
     buttonPlanWatching.dataset.storage = this.isInStorage('plan');
@@ -324,26 +339,28 @@ export default class SearchView extends EventEmitter {
     let filmArticle = document.createElement('div');
     filmArticle.innerHTML = `<p class="movie-card__title margin">${
       data.Title
-      } <span class="movie-card__year">${data.Year}</span></p>
+    } <span class="movie-card__year">${data.Year}</span></p>
         <p class="margin">${data.Plot}</p>
         <p class="movie-card__pretitle margin">Awards: <span class="movie-card__description">${
-      data.Awards
-      }</span></p>
+          data.Awards
+        }</span></p>
         <p class="movie-card__pretitle margin">Rating: <span>${
-      data.Ratings[0] ? data.Ratings[0].Value : (data.Ratings = 'N/A')
-      }</span> <span class="movie-card__votes">${data.imdbVotes} votes</span></p>
+          data.Ratings[0] ? data.Ratings[0].Value : (data.Ratings = 'N/A')
+        }</span> <span class="movie-card__votes">${
+      data.imdbVotes
+    } votes</span></p>
         <p class="movie-card__pretitle margin">Actors: <span class="movie-card__description">${
-      data.Actors
-      }</span></p>
+          data.Actors
+        }</span></p>
         <p class="movie-card__pretitle margin">Country: <span class="movie-card__description">${
-      data.Country
-      }</span></p>
+          data.Country
+        }</span></p>
         <p class="movie-card__pretitle margin">Genre: <span class="movie-card__description">${
-      data.Genre
-      }</span></p>
+          data.Genre
+        }</span></p>
         <p class="movie-card__pretitle margin">Runtime: <span class="movie-card__description">${
-      data.Runtime
-      }</span></p>`;
+          data.Runtime
+        }</span></p>`;
 
     let filmInfo = document.createElement('div');
     filmInfo.classList.add('movie-card__info');
@@ -353,7 +370,6 @@ export default class SearchView extends EventEmitter {
     this.cardSection.innerHTML = '';
 
     this.card.append(filmImage, filmInfo);
-    // this.cardMovie.appendChild(this.card);
     this.wrapper.appendChild(this.card);
   }
 
@@ -370,16 +386,15 @@ export default class SearchView extends EventEmitter {
   onRender(href) {
     let markUp = document.createElement('div');
     if (href === '/library.html') {
-        markUp = library.createHTML();
-    } 
+      markUp = library.createHTML();
+    }
     // else if (href === '/movie.html') {
     //     markUp = this.drawMovie.bind(this);
     else if (href === '/') {
-        markUp = this.drawMain.bind(this);
+      markUp = this.drawMain.bind(this);
     }
     console.log(markUp);
     this.wrapper.innerHTML = '';
     this.wrapper.appendChild(markUp);
-}
-
+  }
 }
