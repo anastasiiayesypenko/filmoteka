@@ -374,7 +374,7 @@ export default class SearchView extends EventEmitter {
       }
       markUp = library.createHTML();
       this.cardSection.appendChild(markUp);
-    } else if (href === '/movie.html') {
+    } else if (href === '/movie.html' || document.URL.slice(-16 ,-10) === 'imdbID') {
       this.emit('renderFilm', document.URL.slice(-9));
       if (container) {
         container.remove();
@@ -388,7 +388,6 @@ export default class SearchView extends EventEmitter {
     } else {
       console.log('strange href', href);
     }
-    console.log('href', href);
 
 }
 
