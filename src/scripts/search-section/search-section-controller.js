@@ -6,9 +6,13 @@ export default class SearchController {
     this.view.on('search', this.onSearch.bind(this));
     this.view.on('move', this.onMove.bind(this));
     this.view.on('show-movie', this.onShow.bind(this));
+    this.view.on('renderFilm', this.onFilmRender.bind(this));
   }
 
   onShow(value) {
+    this.model.fetchFilmById(value).then(data => this.view.drawMovie(data));
+  }
+  onFilmRender(value) {
     this.model.fetchFilmById(value).then(data => this.view.drawMovie(data));
   }
 
