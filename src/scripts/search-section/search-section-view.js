@@ -215,7 +215,6 @@ export default class SearchView extends EventEmitter {
       getWatсhed.push({
         Title: data.Title,
         Poster: data.Poster,
-        Ratings: data.Ratings[0].Value,
         Ratings: data.Ratings,
         imdbID: data.imdbID,
       });
@@ -270,26 +269,16 @@ export default class SearchView extends EventEmitter {
   }
 
   renderButtons(data) {
-    const storage = this.isInStorage('watched', data.imdbID);
-    console.log(storage);
-    console.log(JSON.parse(localStorage.getItem('watched')));
-    console.log(data);
+    const storageWatched = this.isInStorage('watched', data.imdbID);
+    const storagePlan = this.isInStorage('plan', data.imdbID);
+    const storageAdd = this.isInStorage('add', data.imdbID);
 
     let buttonWatchedFilm = document.createElement('button');
     buttonWatchedFilm.dataset.storage = this.isInStorage('watched');
     buttonWatchedFilm.classList.add('movie-card__button');
-    buttonWatchedFilm.textContent = 'Добавить в просмотренные';
-    // if (
-    //   JSON.parse(localStorage.getItem('watched')).filter(
-    //     el => el.imdbID !== data.imdbID,
-    //   )
-    // ) {
-    //   buttonWatchedFilm.textContent = 'Добавить в просмотренные';
-    // } else {
-    //   buttonWatchedFilm.textContent = 'Удалить из просмотренных';
-    // }
-    if (storage) {
-      console.log(storage);
+    // buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+    if (storageWatched) {
+      console.log(storageWatched);
       buttonWatchedFilm.textContent = 'Убрать из просмотренных';
     } else {
       buttonWatchedFilm.textContent = 'Добавить в просмотренные';
@@ -298,12 +287,24 @@ export default class SearchView extends EventEmitter {
     let buttonPlanWatching = document.createElement('button');
     buttonPlanWatching.dataset.storage = this.isInStorage('plan');
     buttonPlanWatching.classList.add('movie-card__button');
-    buttonPlanWatching.textContent = 'Запланировать просмотр';
+    // buttonPlanWatching.textContent = 'Запланировать просмотр';
+    if (storagePlan) {
+      console.log(storagePlan);
+      buttonPlanWatching.textContent = 'Убрать просмотр';
+    } else {
+      buttonPlanWatching.textContent = 'Запланировать просмотр';
+    }
 
     let buttonAddFilmInFav = document.createElement('button');
     buttonAddFilmInFav.dataset.storage = this.isInStorage('add');
     buttonAddFilmInFav.classList.add('movie-card__button');
-    buttonAddFilmInFav.textContent = 'Добавить в избранное';
+    // buttonAddFilmInFav.textContent = 'Добавить в избранное';
+    if (storageAdd) {
+      console.log(storageAdd);
+      buttonAddFilmInFav.textContent = 'Убрать из избранных';
+    } else {
+      buttonAddFilmInFav.textContent = 'Добавить в избранное';
+    }
 
     let filmButtons = document.createElement('div');
 
