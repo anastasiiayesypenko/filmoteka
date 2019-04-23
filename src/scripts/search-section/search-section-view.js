@@ -51,6 +51,7 @@ export default class SearchView extends EventEmitter {
     let input = document.createElement('input');
     form.appendChild(input);
     form.classList.add('form');
+    form.addEventListener('submit', this.onFilmSearch.bind(this));
     input.addEventListener('input', this.onFilmSearch.bind(this));
 
     let forwardButton = document.createElement('button');
@@ -73,9 +74,10 @@ export default class SearchView extends EventEmitter {
 
     this.cardSection.append(paginationWrapper);
     paginationWrapper.classList.add('hidden', 'pagination-wrapper');
-
-    let btnLibrary = document.querySelector('.library-link');
-    btnLibrary.addEventListener('click', this.renderLibrary.bind(this));
+    this.wrapper.style.display = "block";
+    this.cardSection.style.display = "none";
+    this.cardSection.style.display = "block";
+    return this.wrapper;
   }
 
   renderLibrary(e) {
@@ -93,9 +95,8 @@ export default class SearchView extends EventEmitter {
   renderMain(event) {
     event.preventDefault();
     this.wrapper.style.display = "block";
-    this.mainLink.href = `/?redirected=true&page=main&`;
+    this.mainLink.href = `/`;
     history.pushState(null, null, this.mainLink.href);
-    console.log('hate');
     this.wrapper.innerHTML = '';
     this.cardSection.innerHTML = '';
     this.drawMain.bind(this)();
@@ -124,47 +125,48 @@ export default class SearchView extends EventEmitter {
     let filmList = data.Search;
     let paginationWrapper = document.querySelector('.pagination-wrapper');
     paginationWrapper.classList.add('pagination');
+    let amountOfPages = Math.ceil(data.totalResults / 10);
+    let forwardButton = document.querySelector('.pagination__forward-button');
+    let page = document.querySelector('.pagination__page');
+    let cardList = document.querySelector('.card-section');
+    cardList.innerHTML = '';
+    if (page.textContent >= amountOfPages) {
+      forwardButton.classList.add('hidden');
+    }
+    if (filmList) {
+      let markup = filmList.map(item => {
+        let card = document.createElement('li');
+        let link = document.createElement('a');
+        link.classList.add('card-link');
+        card.classList.add('card');
+        let filmTitle = document.createElement('p');
+        let filmImage = document.createElement('img');
+        filmTitle.textContent = item.Title;
+        let { Poster } = item;
+        if (Poster === 'N/A') {
+          Poster = src.default;
+        }
+        filmImage.setAttribute('src', Poster);
+        link.append(filmTitle, filmImage);
+        link.dataset.id = item.imdbID;
+        let movieHref = `/movie.html?imdbID=${link.dataset.id}`;
+        link.setAttribute('href', movieHref);
+        link.addEventListener('click', this.showId.bind(this));
+        card.appendChild(link);
+        cardList.appendChild(card);
+      });
+    };
+    
     if (typeof filmList === 'undefined') {
       paginationWrapper.classList.remove('pagination');
       paginationWrapper.classList.add('hidden');
     }
-    let amountOfPages = Math.ceil(data.totalResults / 10);
-    let forwardButton = document.querySelector('.pagination__forward-button');
-    let page = document.querySelector('.pagination__page');
-    if (page.textContent >= amountOfPages) {
-      forwardButton.classList.add('hidden');
-    }
-    let cardList = document.querySelector('.card-section');
-    cardList.innerHTML = '';
-    let markup = filmList.map(item => {
-      let card = document.createElement('li');
-      let link = document.createElement('a');
-      link.classList.add('card-link');
-      card.classList.add('card');
-      let filmTitle = document.createElement('p');
-      let filmImage = document.createElement('img');
-      filmTitle.textContent = item.Title;
-      let { Poster } = item;
-      if (Poster === 'N/A') {
-        Poster = src.default;
-      }
-      filmImage.setAttribute('src', Poster);
-      link.append(filmTitle, filmImage);
-      link.dataset.id = item.imdbID;
-      let movieHref = `/?redirected=true&page=movie&${link.dataset.id}`;
-      link.setAttribute('href', movieHref);
-      link.addEventListener('click', this.showId.bind(this));
-      card.appendChild(link);
-      cardList.appendChild(card);
-    });
-
 
   }
   showId(event) {
     event.preventDefault();
     history.pushState(null, null, event.target.parentNode.href);
     if (event.target.parentNode.dataset.id) {
-      console.log(event.target.parentNode.dataset.id);
       let id = event.target.parentNode.dataset.id;
       this.emit('show-movie', id);
     };
@@ -199,7 +201,6 @@ export default class SearchView extends EventEmitter {
   }
   isInStorage(type, imdbID) {
     const storage = localStorage.getItem(type);
-    console.log(storage);
     if (!storage) {
       return false;
     }
@@ -209,7 +210,6 @@ export default class SearchView extends EventEmitter {
   changeValueBtnWatchedFilm({ target }, data) {
     const storage = this.isInStorage('watched', data.imdbID);
     if (storage) {
-      console.log(storage);
       const filterArr = JSON.parse(localStorage.getItem('watched')).filter(
         el => el.imdbID !== data.imdbID,
       );
@@ -353,8 +353,8 @@ export default class SearchView extends EventEmitter {
     this.cardSection.innerHTML = '';
 
     this.card.append(filmImage, filmInfo);
-    // this.cardMovie.appendChild(this.card);
     this.wrapper.appendChild(this.card);
+    this.wrapper.style.display = 'block';
   }
 
   drawMovie(data = this.data) {
@@ -362,24 +362,33 @@ export default class SearchView extends EventEmitter {
     const card = this.renderCard(data);
     return card;
   }
-  renderMovie(e) {
-    e.preventDefault();
-    this.state = history;
-    window.history.pushState(null, null, 'movie.html');
-  }
   onRender(href) {
-    let markUp = document.createElement('div');
-    if (href === '/library.html') {
-        markUp = library.createHTML();
-    } 
-    // else if (href === '/movie.html') {
-    //     markUp = this.drawMovie.bind(this);
-    else if (href === '/') {
-        markUp = this.drawMain.bind(this);
-    }
-    console.log(markUp);
+    let markUp;
     this.wrapper.innerHTML = '';
-    this.wrapper.appendChild(markUp);
+    this.cardSection.innerHTML = '';
+    let container = document.querySelector('.container');
+    
+    if (href === '/library.html') {
+      if (container) {
+        container.remove();
+      }
+      markUp = library.createHTML();
+      this.cardSection.appendChild(markUp);
+    } else if (href === '/movie.html' || document.URL.slice(-16 ,-10) === 'imdbID') {
+      this.emit('renderFilm', document.URL.slice(-9));
+      if (container) {
+        container.remove();
+      }
+    } else if (href === '/' || href === '') {
+      this.drawMain();
+      if (container) {
+        container.remove();
+      }
+      return;
+    } else {
+      console.log('strange href', href);
+    }
+
 }
 
 }

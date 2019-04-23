@@ -19,3 +19,7 @@ const controller = new SearchController(model, view);
 window.onpopstate = function(event) {
     view.onRender(document.location.pathname);
 };
+window.onload = function(event) {
+    view.onRender(document.location.pathname);
+};
+
