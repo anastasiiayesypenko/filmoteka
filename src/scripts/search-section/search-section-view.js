@@ -275,20 +275,42 @@ export default class SearchView extends EventEmitter {
   }
 
   renderButtons(data) {
+    const storageWatched = this.isInStorage('watched', data.imdbID);
+    const storagePlan = this.isInStorage('plan', data.imdbID);
+    const storageAdd = this.isInStorage('add', data.imdbID);
+
     let buttonWatchedFilm = document.createElement('button');
     buttonWatchedFilm.dataset.storage = this.isInStorage('watched');
     buttonWatchedFilm.classList.add('movie-card__button');
-    buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+    // buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+    if (storageWatched) {
+      console.log(storageWatched);
+      buttonWatchedFilm.textContent = 'Убрать из просмотренных';
+    } else {
+      buttonWatchedFilm.textContent = 'Добавить в просмотренные';
+    }
 
     let buttonPlanWatching = document.createElement('button');
     buttonPlanWatching.dataset.storage = this.isInStorage('plan');
     buttonPlanWatching.classList.add('movie-card__button');
-    buttonPlanWatching.textContent = 'Запланировать просмотр';
+    // buttonPlanWatching.textContent = 'Запланировать просмотр';
+    if (storagePlan) {
+      console.log(storagePlan);
+      buttonPlanWatching.textContent = 'Убрать просмотр';
+    } else {
+      buttonPlanWatching.textContent = 'Запланировать просмотр';
+    }
 
     let buttonAddFilmInFav = document.createElement('button');
     buttonAddFilmInFav.dataset.storage = this.isInStorage('add');
     buttonAddFilmInFav.classList.add('movie-card__button');
-    buttonAddFilmInFav.textContent = 'Добавить в избранное';
+    // buttonAddFilmInFav.textContent = 'Добавить в избранное';
+    if (storageAdd) {
+      console.log(storageAdd);
+      buttonAddFilmInFav.textContent = 'Убрать из избранных';
+    } else {
+      buttonAddFilmInFav.textContent = 'Добавить в избранное';
+    }
 
     let filmButtons = document.createElement('div');
 
