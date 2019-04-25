@@ -90,6 +90,10 @@ export default class SearchView extends EventEmitter {
     if (this.page) this.page.remove();
     this.cardSection.textContent = '';
     this.cardSection.append(library.createHTML());
+    let cardLink = document.querySelectorAll('.card__link');
+    for (let link of cardLink) {
+      link.addEventListener('click', library.onFilmCardClick.bind(this));
+    }
   }
 
   renderMain(event) {
@@ -289,7 +293,6 @@ export default class SearchView extends EventEmitter {
     buttonWatchedFilm.classList.add('movie-card__button');
     // buttonWatchedFilm.textContent = 'Добавить в просмотренные';
     if (storageWatched) {
-      console.log(storageWatched);
       buttonWatchedFilm.textContent = 'Убрать из просмотренных';
     } else {
       buttonWatchedFilm.textContent = 'Добавить в просмотренные';
@@ -300,7 +303,6 @@ export default class SearchView extends EventEmitter {
     buttonPlanWatching.classList.add('movie-card__button');
     // buttonPlanWatching.textContent = 'Запланировать просмотр';
     if (storagePlan) {
-      console.log(storagePlan);
       buttonPlanWatching.textContent = 'Убрать просмотр';
     } else {
       buttonPlanWatching.textContent = 'Запланировать просмотр';
@@ -311,7 +313,6 @@ export default class SearchView extends EventEmitter {
     buttonAddFilmInFav.classList.add('movie-card__button');
     // buttonAddFilmInFav.textContent = 'Добавить в избранное';
     if (storageAdd) {
-      console.log(storageAdd);
       buttonAddFilmInFav.textContent = 'Убрать из избранных';
     } else {
       buttonAddFilmInFav.textContent = 'Добавить в избранное';
@@ -402,6 +403,10 @@ export default class SearchView extends EventEmitter {
       }
       markUp = library.createHTML();
       this.cardSection.appendChild(markUp);
+      let cardLink = document.querySelectorAll('.card__link');
+      for (let link of cardLink) {
+        link.addEventListener('click', library.onFilmCardClick.bind(this));
+      }
     } else if (href === '/movie.html' || document.URL.slice(-16 ,-10) === 'imdbID') {
       this.emit('renderFilm', document.URL.slice(-9));
       if (container) {

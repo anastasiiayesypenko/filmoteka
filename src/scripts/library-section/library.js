@@ -1,28 +1,8 @@
 'use strict';
-
-function searchByID(imdbId){
-  const url = `http://www.omdbapi.com/?i=${imdbId}&apikey=c6c6013b`;
-  return new Promise(resolve => {
-    fetch(url)
-      .then(response => {
-        if (response.ok) return response.json();
-        throw new Error(`Error while fetching: ${response.statusText}`);
-      })
-      .then(data => {
-        console.log(data);
-        resolve(data);
-      })
-      .catch(error => console.log(error));
-  });
-}
-
-
-function drawMovieCard (){
-
-}
-
-export default class Library {
+import EventEmitter from '../search-section/services/eventemitter';
+export default class Library extends EventEmitter {
   constructor() {
+    super();
     this.moviesCards;
     
   }
@@ -66,59 +46,82 @@ export default class Library {
     btnHaveSeen.addEventListener('click', this.showSeen.bind(this));
     linksList.addEventListener('click', this.chooseActive.bind(this));
 
+
     return container;
   }
 
   renderContent(arr) {
-    let result = document.createElement("div");
+    let result = document.createElement("ul");
     result.classList.add('js-movies-cards');
      let content = arr.reduce((acc, el) => {
       acc += `
-    <div class="card" style = "padding:10px" data-id="${el.imdbID}">
+    <li class="card" style = "padding:10px" data-id="${el.imdbID}">
+      <a href="" class="card__link" data-id="${el.imdbID}">
         <h3>${el.Title}</h3>
         <img src="${el.Poster}" alt="${el.Title}">
-    </div>
+      </a>
+    </li>
     `;
       return acc;
     }, ``);
     result.innerHTML = content;
-    
+
     return result;
+  }
+
+  onFilmCardClick(event) {
+    event.preventDefault();
+    history.pushState(null, null, `/movie.html?imdbID=${event.target.parentNode.dataset.id}`);
+
+    this.emit('renderFilm', event.target.parentNode.dataset.id);
+    console.log(event.target.parentNode.dataset.id);
   }
 
   showQueue(e) {
     const arr = JSON.parse(localStorage.getItem("plan")) || [];
     let result = this.renderContent(arr);
     this.moviesCards = result;
-    console.log(this.moviesCards);
     let elem = document.querySelector('.js-movies-cards');
     elem.remove();
     let container = document.querySelector('.button-container');
     container.append(result);
+    let cardLink = document.querySelectorAll('.card__link');
+    
+    for (let link of cardLink) {
+      console.log(link);
+      link.addEventListener('click', this.onFilmCardClick.bind(this));
+    }
   }
 
   showFavorites(e) {
     const arr = JSON.parse(localStorage.getItem("add")) || [];
     let result = this.renderContent(arr);
     this.moviesCards = result;
-    console.log(this.moviesCards);
     let elem = document.querySelector('.js-movies-cards');
     elem.remove();
     let container = document.querySelector('.button-container');
 
     container.append(result);
+    let cardLink = document.querySelectorAll('.card__link');
+    console.log(cardLink);
+    for (let link of cardLink) {
+      link.addEventListener('click', this.onFilmCardClick.bind(this));
+    }
   }
 
   showSeen(e) {
     const arr = JSON.parse(localStorage.getItem("watched")) || [];
     let result = this.renderContent(arr);
     this.moviesCards = result;
-    console.log(this.moviesCards);
     let elem = document.querySelector('.js-movies-cards');
     elem.remove();
     let container = document.querySelector('.button-container');
-
     container.append(result);
+    let cardLink = document.querySelectorAll('.card__link');
+    console.log(cardLink);
+    for (let link of cardLink) {
+      link.addEventListener('click', this.onFilmCardClick.bind(this));
+    }
   }
 
   chooseActive(e) {
@@ -142,7 +145,6 @@ export default class Library {
           throw new Error(`Error while fetching: ${response.statusText}`);
         })
         .then(data => {
-          console.log(data);
           resolve(data);
         })
         .catch(error => console.log(error));
