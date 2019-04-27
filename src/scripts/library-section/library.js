@@ -56,8 +56,8 @@ export default class Library extends EventEmitter {
      let content = arr.reduce((acc, el) => {
       acc += `
     <li class="card" style = "padding:10px" data-id="${el.imdbID}">
-      <a href="" class="card__link" data-id="${el.imdbID}">
-        <h3>${el.Title}</h3>
+    <div class="card__titlecontainer"><h3 class="card__title">${el.Title}</h3><p class="rate">${el.Ratings[0].Value.substring(0,3)}</p></div>
+    <a href="" class="card__link" data-id="${el.imdbID}">
         <img src="${el.Poster}" alt="${el.Title}">
       </a>
     </li>
@@ -65,6 +65,7 @@ export default class Library extends EventEmitter {
       return acc;
     }, ``);
     result.innerHTML = content;
+    if(arr.length === 0) result.innerHTML = '<p class="empty">Пустота &#128532</p>';
 
     return result;
   }
@@ -132,22 +133,6 @@ export default class Library extends EventEmitter {
       } else {
         btn.classList.remove('active');
       }
-    });
-  }
-
-  searchByID(e){
-    console.log(e.target);
-    const url = `http://www.omdbapi.com/?i=${imdbId}&apikey=c6c6013b`;
-    return new Promise(resolve => {
-      fetch(url)
-        .then(response => {
-          if (response.ok) return response.json();
-          throw new Error(`Error while fetching: ${response.statusText}`);
-        })
-        .then(data => {
-          resolve(data);
-        })
-        .catch(error => console.log(error));
     });
   }
 }
