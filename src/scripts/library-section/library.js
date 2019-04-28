@@ -64,7 +64,8 @@ export default class Library extends EventEmitter {
     }, ``);
     result.innerHTML = content;
     if (arr.length === 0)
-      result.innerHTML = '<p class="empty">Пустота &#128532</p>';
+      result.innerHTML =
+        '<p class="empty">Пустота <span class="empty__emoji">&#128532</span></p>';
 
     return result;
   }
