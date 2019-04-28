@@ -1,6 +1,6 @@
 'use strict';
-import EventEmitter from "./services/eventemitter";
-import Library from "../library-section/library";
+import EventEmitter from './services/eventemitter';
+import Library from '../library-section/library';
 let library = new Library();
 import * as src from './image/no-image.jpg';
 export default class SearchView extends EventEmitter {
@@ -12,8 +12,7 @@ export default class SearchView extends EventEmitter {
     this.logo = document.createElement('h1');
     this.logo.textContent = 'FILM📀TEKA';
     this.navigation = document.createElement('nav');
-    this.navigation.innerHTML =
-      `<ul class="header-list">
+    this.navigation.innerHTML = `<ul class="header-list">
             <li class="header-list__item">
                 <a href="" class="header-list__itemlink main-link">Главная страница</a>
             </li>
@@ -74,15 +73,15 @@ export default class SearchView extends EventEmitter {
 
     this.cardSection.append(paginationWrapper);
     paginationWrapper.classList.add('hidden', 'pagination-wrapper');
-    this.wrapper.style.display = "block";
-    this.cardSection.style.display = "none";
-    this.cardSection.style.display = "block";
+    this.wrapper.style.display = 'block';
+    this.cardSection.style.display = 'none';
+    this.cardSection.style.display = 'block';
     return this.wrapper;
   }
 
   renderLibrary(e) {
     e.preventDefault();
-    this.wrapper.style.display = "none";
+    this.wrapper.style.display = 'none';
 
     window.history.pushState(null, null, 'library.html');
     if (this.forwardButton) this.forwardButton.remove();
@@ -98,7 +97,7 @@ export default class SearchView extends EventEmitter {
 
   renderMain(event) {
     event.preventDefault();
-    this.wrapper.style.display = "block";
+    this.wrapper.style.display = 'block';
     this.mainLink.href = `/`;
     history.pushState(null, null, this.mainLink.href);
     this.wrapper.innerHTML = '';
@@ -108,7 +107,7 @@ export default class SearchView extends EventEmitter {
 
   onFilmSearch(event) {
     event.preventDefault();
-    
+
     let forwardButton = document.querySelector('.pagination__forward-button');
     let backwardButton = document.querySelector('.pagination__backward-button');
     let page = document.querySelector('.pagination__page');
@@ -118,8 +117,7 @@ export default class SearchView extends EventEmitter {
     // if (String(event.type) === 'submit') {
     //   history.pushState(null, null, `/?input=${value}`);
     // }
-    
-    
+
     history.pushState(null, null, `/?input=${value}`);
     backwardButton.classList.add('hidden');
     forwardButton.classList.remove('hidden');
@@ -127,8 +125,6 @@ export default class SearchView extends EventEmitter {
     let pageNumber = page.textContent;
     this.emit('search', value, pageNumber);
     input.style.width = '400px';
-
-
   }
   drawCard(data) {
     let filmList = data.Search;
@@ -164,13 +160,12 @@ export default class SearchView extends EventEmitter {
         card.appendChild(link);
         cardList.appendChild(card);
       });
-    };
-    
+    }
+
     if (typeof filmList === 'undefined') {
       paginationWrapper.classList.remove('pagination');
       paginationWrapper.classList.add('hidden');
     }
-
   }
   showId(event) {
     event.preventDefault();
@@ -178,7 +173,7 @@ export default class SearchView extends EventEmitter {
     if (event.target.parentNode.dataset.id) {
       let id = event.target.parentNode.dataset.id;
       this.emit('show-movie', id);
-    };
+    }
   }
   onBackwardClick() {
     let forwardButton = document.querySelector('.pagination__forward-button');
@@ -352,26 +347,28 @@ export default class SearchView extends EventEmitter {
     let filmArticle = document.createElement('div');
     filmArticle.innerHTML = `<p class="movie-card__title margin">${
       data.Title
-      } <span class="movie-card__year">${data.Year}</span></p>
+    } <span class="movie-card__year">${data.Year}</span></p>
         <p class="margin">${data.Plot}</p>
         <p class="movie-card__pretitle margin">Awards: <span class="movie-card__description">${
-      data.Awards
-      }</span></p>
-        <p class="movie-card__pretitle margin">Rating: <span>${
-      data.Ratings[0] ? data.Ratings[0].Value : (data.Ratings = 'N/A')
-      }</span> <span class="movie-card__votes">${data.imdbVotes} votes</span></p>
+          data.Awards
+        }</span></p>
+        <p class="movie-card__pretitle margin">Rating: <span class="movie-card__rating">${
+          data.Ratings[0] ? data.Ratings[0].Value : (data.Ratings = 'N/A')
+        }</span> <span class="movie-card__votes">${
+      data.imdbVotes
+    } votes</span></p>
         <p class="movie-card__pretitle margin">Actors: <span class="movie-card__description">${
-      data.Actors
-      }</span></p>
+          data.Actors
+        }</span></p>
         <p class="movie-card__pretitle margin">Country: <span class="movie-card__description">${
-      data.Country
-      }</span></p>
+          data.Country
+        }</span></p>
         <p class="movie-card__pretitle margin">Genre: <span class="movie-card__description">${
-      data.Genre
-      }</span></p>
+          data.Genre
+        }</span></p>
         <p class="movie-card__pretitle margin">Runtime: <span class="movie-card__description">${
-      data.Runtime
-      }</span></p>`;
+          data.Runtime
+        }</span></p>`;
 
     let filmInfo = document.createElement('div');
     filmInfo.classList.add('movie-card__info');
@@ -396,7 +393,7 @@ export default class SearchView extends EventEmitter {
     this.cardSection.innerHTML = '';
     let container = document.querySelector('.container');
     let inputPattern = /input/;
-    
+
     if (href === '/library.html') {
       if (container) {
         container.remove();
@@ -407,12 +404,15 @@ export default class SearchView extends EventEmitter {
       for (let link of cardLink) {
         link.addEventListener('click', library.onFilmCardClick.bind(this));
       }
-    } else if (href === '/movie.html' || document.URL.slice(-16 ,-10) === 'imdbID') {
+    } else if (
+      href === '/movie.html' ||
+      document.URL.slice(-16, -10) === 'imdbID'
+    ) {
       this.emit('renderFilm', document.URL.slice(-9));
       if (container) {
         container.remove();
       }
-    } else if (href === '/' && !(document.URL.match(/\?input=./i))) {
+    } else if (href === '/' && !document.URL.match(/\?input=./i)) {
       this.drawMain();
       if (container) {
         container.remove();
@@ -420,12 +420,20 @@ export default class SearchView extends EventEmitter {
       return;
     } else if (document.URL.match(/\?input=./i)) {
       document.URL.match(/=[A-Za-z\.\!\+\\=\d\s]+$/);
-      let value = document.URL.match(/=[A-Za-z\.\!\+\\=\d\s\&\%\$\#\@\?\,]+$/)[0].slice(1).replace(/\%20/gi, ' ');
+      let value = document.URL.match(
+        /=[A-Za-z\.\!\+\\=\d\s\&\%\$\#\@\?\,]+$/,
+      )[0]
+        .slice(1)
+        .replace(/\%20/gi, ' ');
 
       if (value) {
         this.drawMain();
-        let forwardButton = document.querySelector('.pagination__forward-button');
-        let backwardButton = document.querySelector('.pagination__backward-button');
+        let forwardButton = document.querySelector(
+          '.pagination__forward-button',
+        );
+        let backwardButton = document.querySelector(
+          '.pagination__backward-button',
+        );
         let page = document.querySelector('.pagination__page');
         let paginationWrapper = document.querySelector('.pagination-wrapper');
         let input = document.querySelector('input');
@@ -439,11 +447,8 @@ export default class SearchView extends EventEmitter {
           container.remove();
         }
       }
-      
     } else {
       console.log('strange href', href);
     }
-
-}
-
+  }
 }

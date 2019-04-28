@@ -4,7 +4,6 @@ export default class Library extends EventEmitter {
   constructor() {
     super();
     this.moviesCards;
-    
   }
 
   createHTML() {
@@ -28,11 +27,9 @@ export default class Library extends EventEmitter {
     let queueArr = JSON.parse(localStorage.getItem('plan') || '[]');
     let moviesCards = this.renderContent(queueArr);
 
-
     btnQueue.textContent = 'Очередь просмотра';
     btnFavorites.textContent = 'Избранные';
     btnHaveSeen.textContent = 'Просмотренные';
-
 
     container.append(linksList);
     itemQueue.append(btnQueue);
@@ -46,17 +43,18 @@ export default class Library extends EventEmitter {
     btnHaveSeen.addEventListener('click', this.showSeen.bind(this));
     linksList.addEventListener('click', this.chooseActive.bind(this));
 
-
     return container;
   }
 
   renderContent(arr) {
-    let result = document.createElement("ul");
+    let result = document.createElement('ul');
     result.classList.add('js-movies-cards');
-     let content = arr.reduce((acc, el) => {
+    let content = arr.reduce((acc, el) => {
       acc += `
     <li class="card" style = "padding:10px" data-id="${el.imdbID}">
-    <div class="card__titlecontainer"><h3 class="card__title">${el.Title}</h3><p class="rate">${el.Ratings[0].Value.substring(0,3)}</p></div>
+    <div class="card__titlecontainer"><h3 class="card__title">${
+      el.Title
+    }</h3><p class="rate">${el.Ratings[0].Value.substring(0, 3)}</p></div>
     <a href="" class="card__link" data-id="${el.imdbID}">
         <img src="${el.Poster}" alt="${el.Title}">
       </a>
@@ -65,21 +63,26 @@ export default class Library extends EventEmitter {
       return acc;
     }, ``);
     result.innerHTML = content;
-    if(arr.length === 0) result.innerHTML = '<p class="empty">Пустота &#128532</p>';
+    if (arr.length === 0)
+      result.innerHTML = '<p class="empty">Пустота &#128532</p>';
 
     return result;
   }
 
   onFilmCardClick(event) {
     event.preventDefault();
-    history.pushState(null, null, `/movie.html?imdbID=${event.target.parentNode.dataset.id}`);
+    history.pushState(
+      null,
+      null,
+      `/movie.html?imdbID=${event.target.parentNode.dataset.id}`,
+    );
 
     this.emit('renderFilm', event.target.parentNode.dataset.id);
     console.log(event.target.parentNode.dataset.id);
   }
 
   showQueue(e) {
-    const arr = JSON.parse(localStorage.getItem("plan")) || [];
+    const arr = JSON.parse(localStorage.getItem('plan')) || [];
     let result = this.renderContent(arr);
     this.moviesCards = result;
     let elem = document.querySelector('.js-movies-cards');
@@ -87,7 +90,7 @@ export default class Library extends EventEmitter {
     let container = document.querySelector('.button-container');
     container.append(result);
     let cardLink = document.querySelectorAll('.card__link');
-    
+
     for (let link of cardLink) {
       console.log(link);
       link.addEventListener('click', this.onFilmCardClick.bind(this));
@@ -95,7 +98,7 @@ export default class Library extends EventEmitter {
   }
 
   showFavorites(e) {
-    const arr = JSON.parse(localStorage.getItem("add")) || [];
+    const arr = JSON.parse(localStorage.getItem('add')) || [];
     let result = this.renderContent(arr);
     this.moviesCards = result;
     let elem = document.querySelector('.js-movies-cards');
@@ -111,7 +114,7 @@ export default class Library extends EventEmitter {
   }
 
   showSeen(e) {
-    const arr = JSON.parse(localStorage.getItem("watched")) || [];
+    const arr = JSON.parse(localStorage.getItem('watched')) || [];
     let result = this.renderContent(arr);
     this.moviesCards = result;
     let elem = document.querySelector('.js-movies-cards');
