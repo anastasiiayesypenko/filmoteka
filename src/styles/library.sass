@@ -32,9 +32,51 @@
         border: 1px solid black
 
 
-    .js-movies-cards
+    // .js-movies-cards
+    // display: flex
+    // row: wrap
+    // flex-wrap: wrap
+    // justify-content: space-around
+    // padding: 10px 10px 10px 10px
+
+.card
+    max-width: 350px
+    text-align: center
+
+    &__titlecontainer
+        display: flex
+        flex-wrap: wrap
+        justify-content: center
+        align-items: center
+
+    &__title
+        margin: 10px
+        font-size: 24px
+
+.rate
+    padding: 2px
+    margin: 5px
+    background-color: gray
+    border-radius: 15%
+    font-family: "Segoe-UI"
+    color: $main-font-color
+    text-align: center
+    font-weight: 900
+    
+.empty
     display: flex
-    row: wrap
-    flex-wrap: wrap
-    justify-content: space-around
-    padding: 10px 10px 10px 10px
+    font-family: "Segoe-UI"
+    font-size: 150px
+    text-transform: uppercase
+    font-weight: 800
+    color: grey
+    margin-top: 150px
+    opacity: .5
+
+    &__emoji
+      padding-left: 50px
+
+    
+                
+
+    
