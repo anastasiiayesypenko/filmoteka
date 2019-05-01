@@ -33,7 +33,7 @@ export default class SearchView extends EventEmitter {
 
     this.footer = document.createElement('footer');
     this.footer.classList.add('footer');
-    this.footer.textContent = 'Made with ❤️ by Kolya Raketa';
+    this.footer.textContent = 'Made with ❤️ by DreamTeam#2';
     this.app.append(this.header, this.main, this.footer);
     this.mainLink = document.querySelector('.main-link');
     this.libraryLink = document.querySelector('.library-link');
