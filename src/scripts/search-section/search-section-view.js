@@ -2,7 +2,7 @@
 import EventEmitter from './services/eventemitter';
 import Library from '../library-section/library';
 let library = new Library();
-import * as src from './image/no-image.jpg';
+
 export default class SearchView extends EventEmitter {
   constructor() {
     super();
@@ -113,7 +113,8 @@ export default class SearchView extends EventEmitter {
     let page = document.querySelector('.pagination__page');
     let paginationWrapper = document.querySelector('.pagination-wrapper');
     let input = document.querySelector('input');
-    let { value } = input;
+    let value = input.value.replace(/\s+$/, '');
+    
     // if (String(event.type) === 'submit') {
     //   history.pushState(null, null, `/?input=${value}`);
     // }
@@ -149,7 +150,7 @@ export default class SearchView extends EventEmitter {
         filmTitle.textContent = item.Title;
         let { Poster } = item;
         if (Poster === 'N/A') {
-          Poster = src.default;
+          Poster = 'https://dfsport.ru/upload/resize_cache/iblock/219/390_390_1/21910e2151a0d355998fcfa0e3a6e83f.png';
         }
         filmImage.setAttribute('src', Poster);
         link.append(filmTitle, filmImage);
@@ -411,7 +412,13 @@ export default class SearchView extends EventEmitter {
       if (container) {
         container.remove();
       }
-    } else if (href === '/' || href === '/index.html' || href === '/filmoteka/build/index.html' && !document.URL.match(/\?input=./i)) {
+    } else if (href === '/' && !document.URL.match(/\?input=./i)) {
+      this.drawMain();
+      if (container) {
+        container.remove();
+      }
+      return;
+    } else if (href === '/filmoteka/build/index.html' && !document.URL.match(/\?input=./i)) {
       this.drawMain();
       if (container) {
         container.remove();

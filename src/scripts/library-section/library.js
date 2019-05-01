@@ -79,7 +79,6 @@ export default class Library extends EventEmitter {
     );
 
     this.emit('renderFilm', event.target.parentNode.dataset.id);
-    console.log(event.target.parentNode.dataset.id);
   }
 
   showQueue(e) {
@@ -93,7 +92,6 @@ export default class Library extends EventEmitter {
     let cardLink = document.querySelectorAll('.card__link');
 
     for (let link of cardLink) {
-      console.log(link);
       link.addEventListener('click', this.onFilmCardClick.bind(this));
     }
   }
@@ -108,7 +106,6 @@ export default class Library extends EventEmitter {
 
     container.append(result);
     let cardLink = document.querySelectorAll('.card__link');
-    console.log(cardLink);
     for (let link of cardLink) {
       link.addEventListener('click', this.onFilmCardClick.bind(this));
     }
@@ -123,7 +120,6 @@ export default class Library extends EventEmitter {
     let container = document.querySelector('.button-container');
     container.append(result);
     let cardLink = document.querySelectorAll('.card__link');
-    console.log(cardLink);
     for (let link of cardLink) {
       link.addEventListener('click', this.onFilmCardClick.bind(this));
     }
