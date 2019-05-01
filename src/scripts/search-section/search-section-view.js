@@ -392,7 +392,6 @@ export default class SearchView extends EventEmitter {
     this.wrapper.innerHTML = '';
     this.cardSection.innerHTML = '';
     let container = document.querySelector('.container');
-    let inputPattern = /input/;
 
     if (href === '/library.html') {
       if (container) {
@@ -412,7 +411,7 @@ export default class SearchView extends EventEmitter {
       if (container) {
         container.remove();
       }
-    } else if (href === '/' && !document.URL.match(/\?input=./i)) {
+    } else if (href === '/' || href === '/index.html' || href === '' && !document.URL.match(/\?input=./i)) {
       this.drawMain();
       if (container) {
         container.remove();
