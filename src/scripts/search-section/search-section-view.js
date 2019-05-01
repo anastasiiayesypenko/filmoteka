@@ -411,7 +411,7 @@ export default class SearchView extends EventEmitter {
       if (container) {
         container.remove();
       }
-    } else if (href === '/' || href === '/index.html' || href === 'build/index.html' || href === '/build/index.html' && !document.URL.match(/\?input=./i)) {
+    } else if (href === '/' || href === '/index.html' || href === '/filmoteka/build/index.html' && !document.URL.match(/\?input=./i)) {
       this.drawMain();
       if (container) {
         container.remove();
