@@ -4,7 +4,7 @@ export default class SearchModel {
   fetchFilmByTitle(title, page) {
     return new Promise(resolve => {
       let film = fetch(
-        `http://www.omdbapi.com/?s=${title}&page=${page}&apikey=c6c6013b`,
+        `https://www.omdbapi.com/?s=${title}&page=${page}&apikey=c6c6013b`,
       )
         .then(response => {
           if (response.ok) {
@@ -20,7 +20,7 @@ export default class SearchModel {
   }
 
   fetchFilmById(imdbId) {
-    const url = `http://www.omdbapi.com/?i=${imdbId}&apikey=c6c6013b`;
+    const url = `https://www.omdbapi.com/?i=${imdbId}&apikey=c6c6013b`;
     return new Promise(resolve => {
       fetch(url)
         .then(response => {

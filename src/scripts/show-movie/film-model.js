@@ -2,7 +2,7 @@
 export default class FilmModel {
   constructor() {}
   fetchFilmByTitle(imdbId) {
-    const url = `http://www.omdbapi.com/?i=${imdbId}&apikey=c6c6013b`;
+    const url = `https://www.omdbapi.com/?i=${imdbId}&apikey=c6c6013b`;
     return new Promise(resolve => {
       fetch(url)
         .then(response => {
